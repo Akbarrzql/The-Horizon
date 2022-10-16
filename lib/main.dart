@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:thehorizonapps/SplashScreen/splashscreen.dart';
+import 'package:thehorizonapps/SplashScreen/splashscreentwo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
-void main() {
-  runApp(const MyApp());
+int? initScreen;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = prefs.getInt('initScreen');
+  await prefs.setInt('initScreen', 1);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +37,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: const splashscreen(),
+      initialRoute : initScreen == null || initScreen == 0
+          ? 'home'
+          : 'splashscreen',
+      routes: {
+        'splashscreen': (context) => splashscreen(),
+        'home': (context) => splashscreentwo(),
+      },
     );
   }
 }

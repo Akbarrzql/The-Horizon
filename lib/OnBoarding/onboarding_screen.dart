@@ -15,6 +15,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   List colors = [Colors.white, Colors.white, Colors.white];
 
+
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),

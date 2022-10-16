@@ -1,23 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:thehorizonapps/Main/home.dart';
+import 'dart:async';
 import 'package:thehorizonapps/OnBoarding/onboarding_screen.dart';
 
-class splashscreen extends StatefulWidget {
-  const splashscreen({Key? key}) : super(key: key);
+class splashscreentwo extends StatefulWidget {
+  const splashscreentwo({Key? key}) : super(key: key);
 
   @override
-  State<splashscreen> createState() => _splashscreenState();
+  State<splashscreentwo> createState() => _splashscreentwoState();
 }
 
-class _splashscreenState extends State<splashscreen> {
+class _splashscreentwoState extends State<splashscreentwo> {
 
-  startSplashScreen() async {
+  startSplashScreentwo() async {
     var duration = const Duration(seconds: 5);
     return Timer(duration, () {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Home()));
+          MaterialPageRoute(builder: (context) => OnboardingScreen()));
     });
   }
 
@@ -25,7 +23,7 @@ class _splashscreenState extends State<splashscreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    startSplashScreen();
+    startSplashScreentwo();
   }
 
   @override
