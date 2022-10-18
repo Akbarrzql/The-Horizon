@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:thehorizonapps/Main/home.dart';
+import 'package:thehorizonapps/Main/bottomnav.dart';
+import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/OnBoarding/onboarding_screen.dart';
 
 class splashscreen extends StatefulWidget {
@@ -17,7 +18,7 @@ class _splashscreenState extends State<splashscreen> {
     var duration = const Duration(seconds: 5);
     return Timer(duration, () {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => Home()));
+          MaterialPageRoute(builder: (context) => MainNav()));
     });
   }
 
