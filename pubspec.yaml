@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   lottie: ^1.4.3
   shared_preferences: ^2.0.15
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +52,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   lottie: ^1.4.3
   shared_preferences: ^2.0.15
+  google_fonts: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -70,6 +72,14 @@ flutter:
     - book.gif
     - education.gif
     - globe.gif
+    - logo_app_bar.png
+    - logonew.png
+    - logonew1.png
+    - one.png
+    - two.png
+    - three.png
+    - four.png
+    - five.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:thehorizonapps/Main/home.dart';
+import 'package:thehorizonapps/Main/bottomnav.dart';
+import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/OnBoarding/onboarding_contents.dart';
 import 'package:thehorizonapps/OnBoarding/SizeConfig.dart';
 
@@ -111,7 +112,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const Home(),
+                            builder: (context) => const MainNav(),
                           ),
                         );
                       },
