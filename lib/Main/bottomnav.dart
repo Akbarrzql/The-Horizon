@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:thehorizonapps/Main/Kuis/screens/main_quiz.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
-import 'package:thehorizonapps/Main/PageMore/morepage.dart';
-import 'package:thehorizonapps/Main/PageSave/save.dart';
-
+import 'package:thehorizonapps/Main/PageSave/KategoriSave/save.dart';
+import 'package:thehorizonapps/Search/SearchPage.dart';
 
 class MainNav extends StatefulWidget {
   const MainNav({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class _MainNavState extends State<MainNav> {
   static const List<Widget> _pages = <Widget>[
     Home(),
     Pagesave(),
-    Pagemore(),
+    MainMenu(),
   ];
 
 
@@ -47,6 +47,21 @@ class _MainNavState extends State<MainNav> {
                 padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
           ],
         ),
+        //no back button
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Search',
+            color: Colors.black,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>   SearchPage()),
+              );
+            },
+          ),
+        ],
       ),
       body:(
           IndexedStack(
@@ -57,6 +72,7 @@ class _MainNavState extends State<MainNav> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         elevation: 2,
+        unselectedIconTheme: IconThemeData(color: Colors.black),
         selectedItemColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -64,12 +80,14 @@ class _MainNavState extends State<MainNav> {
             label: 'Jelajahi',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
+            icon: Icon(Icons.bookmark_border_outlined),
             label: 'Simpan',
+            activeIcon: Icon(Icons.bookmark),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
+            icon: Icon(Icons.quiz_outlined),
+            label: 'Kuis',
+            activeIcon: Icon(Icons.quiz),
           ),
         ],
         currentIndex: _selectedIndex, //New
