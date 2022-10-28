@@ -70,7 +70,7 @@ class Articles {
   String? timestamp;
   String? description;
   String? descriptionSource;
-  ContentUrls? contentUrls;
+  String? contentUrls;
   String? extract;
   String? extractHtml;
   String? normalizedtitle;
@@ -139,9 +139,7 @@ class Articles {
     timestamp = json['timestamp'];
     description = json['description'];
     descriptionSource = json['description_source'];
-    contentUrls = json['content_urls'] != null
-        ? new ContentUrls.fromJson(json['content_urls'])
-        : null;
+    contentUrls = json['content_urls']['mobile']['page'];
     extract = json['extract'];
     extractHtml = json['extract_html'];
     normalizedtitle = json['normalizedtitle'];
@@ -181,9 +179,7 @@ class Articles {
     data['timestamp'] = this.timestamp;
     data['description'] = this.description;
     data['description_source'] = this.descriptionSource;
-    if (this.contentUrls != null) {
-      data['content_urls'] = this.contentUrls!.toJson();
-    }
+    data['content_urls']['mobile']['page'] = this.contentUrls;
     data['extract'] = this.extract;
     data['extract_html'] = this.extractHtml;
     data['normalizedtitle'] = this.normalizedtitle;
@@ -197,6 +193,7 @@ class Articles {
     return {
       'normalizedtitle': normalizedtitle,
       'description': description,
+      'content_urls': contentUrls,
     };
   }
 }
@@ -306,6 +303,7 @@ class ContentUrls {
     }
     return data;
   }
+
 }
 
 class Desktop {
@@ -331,6 +329,16 @@ class Desktop {
     data['talk'] = this.talk;
     return data;
   }
+
+  Map<String, dynamic> toMap(){
+    return {
+      'page': page,
+      'revisions': revisions,
+      'edit': edit,
+      'talk': talk,
+    };
+  }
+
 }
 
 class Image {

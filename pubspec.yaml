@@ -103,6 +103,14 @@ flutter:
     - circle.gif
     - search.gif
     - search2.gif
+    - artikelacak.jpg
+    - tersimpansejarah.jpg
+    - tersimpanteratas.jpg
+    - spaceloading.gif
+    - spaceload.gif
+    - space.gif
+    - pingpong.json
+    - loadingparticle.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

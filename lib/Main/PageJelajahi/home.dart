@@ -15,6 +15,7 @@ import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
+import 'package:thehorizonapps/Search/SearchPage.dart';
 
 
 class Home extends StatefulWidget {
@@ -32,6 +33,9 @@ class _HomeState extends State<Home> {
   bool loading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
+  String year = DateTime.now().year.toString();
+  String mount = DateTime.now().month.toString();
+  String day = DateTime.now().day.toString();
 
 
   //get data
@@ -40,12 +44,12 @@ class _HomeState extends State<Home> {
       loading = false;
     });
 
-    final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/10/25'));
+    final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
     print("Response status: ${responseOtd.statusCode}");
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/2022/10/25'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
     print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
@@ -76,6 +80,23 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
 
+    Route _createRoute() {
+      return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const SearchPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.1, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.easeIn;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+      );
+    }
 
     return Scaffold(
       body: RefreshIndicator(
@@ -85,8 +106,46 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.only(top: 5, bottom: 10),
           child: Column(
         children: <Widget>[
+          Container(
+            //search on tap
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(_createRoute());
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                padding: EdgeInsets.only(left: 10, right: 10),
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  //side border
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Icon(
+                      Icons.search,
+                      color: Colors.grey[600],
+                    ),
+                    Text(
+                      'Cari artikel, Sejarah atau hal lainnya',
+                      style: GoogleFonts.poppins(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         Container(
-            margin: const EdgeInsets.only(top: 10, left: 15),
+            margin: const EdgeInsets.only(top: 30, left: 15),
         child: Row(
             children: <Widget>[
               Text("Hari ini di TheHorizon", style: GoogleFonts.poppins(color: Color(0xff004A54), fontSize: 24, fontWeight: FontWeight.bold),),

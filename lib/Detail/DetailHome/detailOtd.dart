@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:http/http.dart' as http;
@@ -19,12 +20,16 @@ class _DetailOtdState extends State<DetailOtd> {
   bool loadingOtd = true;
   bool isVisiblemage =  true;
   final ScrollController _scrollController = ScrollController();
+  //get mount
+  String mount = DateTime.now().month.toString();
+  String day = DateTime.now().day.toString();
+
 
   void getOtd() async{
     setState(() {
       loadingOtd = false;
     });
-    final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/10/25'));
+    final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
     print("Response status: ${responseOtd.statusCode}");
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
@@ -46,6 +51,7 @@ class _DetailOtdState extends State<DetailOtd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
         title: Container(
           margin: const EdgeInsets.only(left: 20),
@@ -186,7 +192,9 @@ class _DetailOtdState extends State<DetailOtd> {
             ),
           );
         },
-      ) : Center(child: CircularProgressIndicator()),
+      ) : Center(
+        child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:http/http.dart' as http;
@@ -17,12 +18,15 @@ class _DetailFeedState extends State<DetailFeed> {
 
   FeedModel? feedModel;
   bool loadingFeed = true;
+  String year = DateTime.now().year.toString();
+  String mount = DateTime.now().month.toString();
+  String day = DateTime.now().day.toString();
 
   void getFeedDetail() async{
     setState(() {
       loadingFeed = false;
     });
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/2022/10/25'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
     print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
@@ -42,6 +46,7 @@ class _DetailFeedState extends State<DetailFeed> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
         title: Container(
           margin: const EdgeInsets.only(left: 20),
@@ -119,7 +124,7 @@ class _DetailFeedState extends State<DetailFeed> {
                 ),
               ),
             );
-          }) : Center(child: CircularProgressIndicator(),),
+          }) : Center( child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),),
     );
   }
 }

@@ -31,7 +31,7 @@ class _DetailPageState extends State<DetailPage> {
       join(await getDatabasesPath(), 'feedDB.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE feed(normalizedtitle TEXT, description TEXT)",
+          "CREATE TABLE feed(normalizedtitle TEXT, description TEXT, content_urls TEXT)",
         );
       },
       version: 1,
@@ -80,6 +80,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
         title: Container(
           margin: const EdgeInsets.only(left: 20),
@@ -107,7 +108,7 @@ class _DetailPageState extends State<DetailPage> {
         ],
       ),
       body: WebView(
-        initialUrl: widget.articles.contentUrls!.mobile!.page!,
+        initialUrl: widget.articles.contentUrls,
         javascriptMode: JavascriptMode.unrestricted,
       ),
     );
