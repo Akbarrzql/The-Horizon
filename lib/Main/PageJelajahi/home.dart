@@ -13,6 +13,7 @@ import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
+import 'package:thehorizonapps/Detail/DetailImage/DetailImage.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 
@@ -611,7 +612,9 @@ class _HomeState extends State<Home> {
         ),
       ),
       InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailImage()));
+        },
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
