@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/Main/Kuis/screens/main_quiz.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
-import 'package:thehorizonapps/Main/PageSave/KategoriSave/save.dart';
+import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveFeed.dart';
+import 'package:thehorizonapps/Main/PageSave/PageSave.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 
 class MainNav extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MainNavState extends State<MainNav> {
 
   static const List<Widget> _pages = <Widget>[
     Home(),
-    Pagesave(),
+    PageSaveKategori(),
     MainMenu(),
   ];
 
@@ -33,6 +34,7 @@ class _MainNavState extends State<MainNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -49,19 +51,6 @@ class _MainNavState extends State<MainNav> {
         ),
         //no back button
         automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            tooltip: 'Search',
-            color: Colors.black,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>   SearchPage()),
-              );
-            },
-          ),
-        ],
       ),
       body:(
           IndexedStack(

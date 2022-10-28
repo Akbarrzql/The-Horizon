@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class OnThisDayModel {
   List<Events>? events;
 
@@ -70,7 +68,7 @@ class Pages {
   String? description;
   String? descriptionSource;
   Coordinates? coordinates;
-  ContentUrls? contentUrls;
+  String? contentUrls;
   String? extract;
   String? extractHtml;
   String? normalizedtitle;
@@ -110,7 +108,7 @@ class Pages {
     json['titles'] != null ? new Titles.fromJson(json['titles']) : null;
     pageid = json['pageid'];
     thumbnail = json['thumbnail'] != null
-        ? new Thumbnail.fromJson(json['thumbnail'])
+        ? new Thumbnail.fromJson(json[  'thumbnail'])
         : null;
     originalimage = json['originalimage'] != null
         ? new Thumbnail.fromJson(json['originalimage'])
@@ -125,9 +123,7 @@ class Pages {
     coordinates = json['coordinates'] != null
         ? new Coordinates.fromJson(json['coordinates'])
         : null;
-    contentUrls = json['content_urls'] != null
-        ? new ContentUrls.fromJson(json['content_urls'])
-        : null;
+    contentUrls = json['content_urls']['mobile']['page'];
     extract = json['extract'];
     extractHtml = json['extract_html'];
     normalizedtitle = json['normalizedtitle'];
@@ -162,9 +158,7 @@ class Pages {
     if (this.coordinates != null) {
       data['coordinates'] = this.coordinates!.toJson();
     }
-    if (this.contentUrls != null) {
-      data['content_urls'] = this.contentUrls!.toJson();
-    }
+    data['content_urls']['mobile']['page'] = this.contentUrls;
     data['extract'] = this.extract;
     data['extract_html'] = this.extractHtml;
     data['normalizedtitle'] = this.normalizedtitle;
@@ -175,6 +169,7 @@ class Pages {
     return {
       'normalizedtitle': normalizedtitle,
       'description': description,
+      'content_urls': contentUrls,
     };
   }
 }
@@ -308,5 +303,14 @@ class Desktop {
     data['edit'] = this.edit;
     data['talk'] = this.talk;
     return data;
+  }
+
+  Map<String, dynamic> toMap(){
+    return {
+      'page': page,
+      'revisions': revisions,
+      'edit': edit,
+      'talk': talk,
+    };
   }
 }

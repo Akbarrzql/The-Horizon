@@ -31,7 +31,7 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
       join(await getDatabasesPath(), 'otdDB.db'),
       onCreate: (db, version) {
         return db.execute(
-          "CREATE TABLE otd(normalizedtitle TEXT, description TEXT)",
+          "CREATE TABLE otd(normalizedtitle TEXT, description TEXT, content_urls TEXT)",
         );
       },
       version: 1,
@@ -80,6 +80,7 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         backgroundColor: Colors.white,
         title: Container(
           margin: const EdgeInsets.only(left: 20),
@@ -100,9 +101,14 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
         leading: const BackButton(
           color: Colors.black,
         ),
+        actions: [
+          IconButton(onPressed: (){
+            isFavorite ? deleteOtd(widget.pages) : insertOtd(widget.pages);
+          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+        ],
       ),
       body: WebView(
-        initialUrl: widget.pages.contentUrls!.mobile!.page!,
+        initialUrl: widget.pages.contentUrls,
         javascriptMode: JavascriptMode.unrestricted,
       ),
     );
