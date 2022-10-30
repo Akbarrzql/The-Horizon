@@ -24,7 +24,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         borderRadius: BorderRadius.all(
           Radius.circular(50),
         ),
-        color: const Color(0xFF000000),
+        color: const Color(0xff004A54),
       ),
       margin: const EdgeInsets.only(right: 5),
       height: 10,
@@ -116,9 +116,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                         );
                       },
-                      child: Text("START"),
+                      child: Text("START", style: TextStyle(
+                        color: Color(0xffCBCBCB)
+                      ),),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
+                        primary: Color(0xff004A54),
                         shape: new RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
@@ -143,7 +145,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           },
                           child: Text(
                             "SKIP",
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Color(0xffCBCBCB)),
                           ),
                           style: TextButton.styleFrom(
                             elevation: 0,
@@ -160,9 +162,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               curve: Curves.easeIn,
                             );
                           },
-                          child: Text("NEXT"),
+                          child: Text("NEXT", style: TextStyle(
+                              color: Color(0xffCBCBCB)
+                          ),),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            primary: Color(0xff004A54),
                             shape: new RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
                             ),
