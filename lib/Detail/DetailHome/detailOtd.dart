@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_scrolling_fab_animated/flutter_scrolling_fab_animated.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
@@ -74,6 +75,7 @@ class _DetailOtdState extends State<DetailOtd> {
         ),
       ),
       body: loadingOtd ? ListView.builder(
+        controller: _scrollController,
         itemCount: onThisDayModel?.events?.length,
         itemBuilder: (context, index) {
           return Container(
@@ -192,8 +194,18 @@ class _DetailOtdState extends State<DetailOtd> {
             ),
           );
         },
+
       ) : Center(
-        child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),
+        child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: Duration(milliseconds: 1000),
+              curve: Curves.fastOutSlowIn);
+        },
+        child: Icon(Icons.navigation, color: Colors.white,),
+        backgroundColor: Color(0xff004A54),
       ),
     );
   }
