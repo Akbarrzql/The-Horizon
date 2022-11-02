@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveFeed.dart';
 import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveOtd.dart';
+import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveRandom.dart';
 
 class PageSaveKategori extends StatefulWidget {
   const PageSaveKategori({Key? key}) : super(key: key);
@@ -131,7 +132,9 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                     height: 130,
                     width: 350,
                     child: InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SaveRandom()));
+                      },
                       child: Card(
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(

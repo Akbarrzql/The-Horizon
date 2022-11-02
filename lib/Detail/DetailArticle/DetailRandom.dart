@@ -100,6 +100,11 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
         leading: const BackButton(
           color: Colors.black,
         ),
+        actions: [
+          IconButton(onPressed: (){
+            isFavorite ? deleteRandom(widget.randomModel) : insertRandom(widget.randomModel);
+          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+        ],
       ),
       //web view for detail article
       body: WebView(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_scrolling_fab_animated/flutter_scrolling_fab_animated.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';

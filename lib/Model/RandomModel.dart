@@ -28,10 +28,8 @@ class RandomModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'title': title,
       'description': description,
-      'image': image,
       'linkurl': linkurl,
     };
   }
