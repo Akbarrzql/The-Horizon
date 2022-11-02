@@ -7,16 +7,20 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/src/widgets/image.dart' as image;
+import 'package:flutter/services.dart' as rootBundle;
 import 'package:image_downloader/image_downloader.dart';
 import 'package:share/share.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
+import 'package:thehorizonapps/Detail/DetailArticle/DetailRandom.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
+import 'package:thehorizonapps/Detail/DetailHome/DetailRandom.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
 import 'package:thehorizonapps/Detail/DetailImage/DetailImage.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
+import 'package:thehorizonapps/Model/RandomModel.dart';
 
 
 class Home extends StatefulWidget {
@@ -67,6 +71,12 @@ class _HomeState extends State<Home> {
     return getFeed();
   }
 
+  Future<List<RandomModel>> ReadJsonData() async {
+    final jsondata =
+    await rootBundle.rootBundle.loadString('assets/randomArticle.json');
+    final list = json.decode(jsondata) as List<dynamic>;
+    return list.map((e) => RandomModel.fromJson(e)).toList();
+  }
 
 
 
@@ -244,7 +254,11 @@ class _HomeState extends State<Home> {
                                             children: <Widget>[
                                               Container(
                                                 margin: const EdgeInsets.only(bottom: 10),
-                                                child: widgets.Image.network("${onThisDayModel?.events![0].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", width: 330, height: 230, fit: BoxFit.cover,),
+                                                //image radius
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                                    child: widgets.Image.network("${onThisDayModel?.events![0].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", width: 330, height: 230, fit: BoxFit.cover,)
+                                                ),
                                               ),
                                               Container(
                                                 child: Column(
@@ -685,7 +699,11 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(bottom: 10),
-                  child: widgets.FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: 'https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80', fit: BoxFit.cover),
+                  //image radius
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                      child: widgets.FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: 'https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80', fit: BoxFit.cover)
+                  ),
                 ),
                 Container(
                   child: Column(
@@ -754,56 +772,88 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      InkWell(
-        onTap: () {},
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
-          ),
-          child: Container(
-            width: 330,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: widgets.Image.asset('assets/logo.png', fit: BoxFit.cover),
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                          margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                          width: 300,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Lorem ipsum dolor sit amet", style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),),
-                              Divider(
-                                color: Colors.grey,
-                                height: 20,
-                                thickness: 1,
-                                indent: 0,
-                                endIndent: 200,
-                              ),
-                              Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet ipsum id mi porta volutpat. Donec convallis velit id maximus ornare. Mauris et velit fringilla ", style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w600),),
-                            ],
-                          )
+          FutureBuilder(
+            future: ReadJsonData(),
+            builder: (context, data) {
+              if (data.hasError) {
+                return ScaffoldMessenger(child: Text("${data.error}"));
+              } else if (data.hasData) {
+                var items = data.data as List<RandomModel>;
+                //if card is finish then show finish page
+                if (items.isEmpty) {
+                  return ScaffoldMessenger(child: Text("Finish"));
+                } else {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailArticleRandom(
+                        randomModel: items[0],
+                      )));
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                      child: Container(
+                        width: 330,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              //image radius
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                child: widgets.Image.network(items[0].image.toString(), fit: BoxFit.cover),
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                      width: 300,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(items[0].title.toString(), style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),),
+                                          Divider(
+                                            color: Colors.grey,
+                                            height: 20,
+                                            thickness: 1,
+                                            indent: 0,
+                                            endIndent: 200,
+                                          ),
+                                          Text(items[0].description.toString(), style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w600),),
+                                        ],
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
-        ),
-      ),
       Container(
         child: Row(
           children: [
             InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DetailRandom()),
+                  );
+                },
                 child: Container(
                   margin: const EdgeInsets.only(left: 15),
                   child: Row(
