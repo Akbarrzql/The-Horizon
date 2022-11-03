@@ -121,6 +121,7 @@ flutter:
     - loadingparticle.json
     - randomArticle.json
     - doneils.svg
+    - circleotd.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

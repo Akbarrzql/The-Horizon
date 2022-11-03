@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/src/widgets/image.dart' as image;
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:image_downloader/image_downloader.dart';
+import 'package:lottie/lottie.dart';
 import 'package:share/share.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
   new GlobalKey<RefreshIndicatorState>();
   String year = DateTime.now().year.toString();
   String mount = DateTime.now().month.toString();
-  String day = DateTime.now().day.toString();
+  String day = DateTime.now().day.toString().padLeft(2, '0');
 
 
   //get data
@@ -52,7 +53,7 @@ class _HomeState extends State<Home> {
     final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
     print("Response status: ${responseOtd.statusCode}");
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
-    print("Response body: ${onThisDayModel?.events![0].text}");
+     print("Response body: ${onThisDayModel?.events![0].text}");
 
     final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
@@ -196,11 +197,7 @@ class _HomeState extends State<Home> {
                       margin: EdgeInsets.only(left: 5, top: 10),
                       width: 40,
                       height: 40,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/circle.gif'),
-                        ),
-                      ),
+                      child: Lottie.asset('assets/circleotd.json', width: 300, height: 300, fit: BoxFit.cover,),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10, top: 10),

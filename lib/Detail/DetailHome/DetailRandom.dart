@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailRandom.dart';
 import 'package:thehorizonapps/Model/RandomModel.dart';
 
@@ -94,7 +95,7 @@ class _DetailRandomState extends State<DetailRandom> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(items[index].title.toString(), style: GoogleFonts.poppins(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),),
-                                        Divider(
+                                        const Divider(
                                           color: Colors.grey,
                                           height: 20,
                                           thickness: 1,
@@ -131,7 +132,7 @@ class _DetailRandomState extends State<DetailRandom> {
               }
             } else {
               return Center(
-                child: CircularProgressIndicator(),
+                child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),
               );
             }
           },

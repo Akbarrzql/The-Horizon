@@ -60,7 +60,7 @@ class _DetailImageState extends State<DetailImage> {
                       ),
                       Container(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Text("Congreve Street, Birmingham, showing Christ Church and the Town Hall, By Laurence J Hart", style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),),
+                        child: Text("karya gambar lukisan yang mengenai tentang Christ Church and the Town Hall yang berada di Congreve Street, Birmingham. Di buat oleh Laurence J Hart", style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),),
                       ),
                     ],
                   ),

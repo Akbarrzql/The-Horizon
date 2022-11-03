@@ -87,11 +87,7 @@ class _DetailOtdState extends State<DetailOtd> {
                           margin: EdgeInsets.only(left: 5, top: 10),
                           width: 40,
                           height: 40,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/circle.gif'),
-                            ),
-                          ),
+                          child: Lottie.asset('assets/circleotd.json', width: 300, height: 300, fit: BoxFit.cover,),
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 10),
