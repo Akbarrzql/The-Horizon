@@ -62,7 +62,8 @@ class _MainNavState extends State<MainNav> {
         backgroundColor: Colors.white,
         elevation: 2,
         unselectedIconTheme: IconThemeData(color: Colors.black),
-        selectedItemColor: Colors.black,
+        selectedIconTheme: IconThemeData(color: Color(0xff004A54)),
+        selectedItemColor: Color(0xff004A54),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.public),
@@ -71,12 +72,12 @@ class _MainNavState extends State<MainNav> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark_border_outlined),
             label: 'Simpan',
-            activeIcon: Icon(Icons.bookmark),
+            activeIcon: Icon(Icons.bookmark, color: Color(0xff004A54),),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.quiz_outlined),
             label: 'Kuis',
-            activeIcon: Icon(Icons.quiz),
+            activeIcon: Icon(Icons.quiz, color: Color(0xff004A54),),
           ),
         ],
         currentIndex: _selectedIndex, //New

@@ -41,7 +41,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   //insert
-  Future<void> insertNyt(Articles articles) async {
+  Future<void> insertNyt(Articles articles, BuildContext context) async {
     final Database db = await database;
     await db.insert(
       'feed',
@@ -51,9 +51,24 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       isFavorite = true;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            deleteNyt(articles, context);
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> deleteNyt(Articles? articles) async {
+  Future<void> deleteNyt(Articles? articles, BuildContext context) async {
     final db = await database;
     await db.delete(
       'feed',
@@ -63,6 +78,21 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       isFavorite = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menghapus dari favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            insertNyt(articles, context);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> readNyt(String? normalizedtitle) async {
@@ -103,7 +133,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: [
           IconButton(onPressed: (){
-            isFavorite ? deleteNyt(widget.articles) : insertNyt(widget.articles);
+            isFavorite ? deleteNyt(widget.articles, context) : insertNyt(widget.articles, context);
           }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
         ],
       ),

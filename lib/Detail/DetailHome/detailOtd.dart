@@ -22,7 +22,8 @@ class _DetailOtdState extends State<DetailOtd> {
   final ScrollController _scrollController = ScrollController();
   //get mount
   String mount = DateTime.now().month.toString();
-  String day = DateTime.now().day.toString();
+  //get day
+  String day = DateTime.now().day.toString().padLeft(2, '0');
 
 
   void getOtd() async{
@@ -54,18 +55,64 @@ class _DetailOtdState extends State<DetailOtd> {
         elevation: 0.5,
         backgroundColor: Colors.white,
         title: Container(
-          margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              widgets.Image.asset(
-                'assets/logonew1.png',
-                fit: BoxFit.contain,
-                height: 50,
-                width: 50,
-              ),
-              Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+              Row(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.utc(2022, 1, 1),
+                        lastDate: DateTime.utc(2022, 12, 31),
+                        helpText: 'Hari ini dalam sejarah',
+                        cancelText: 'Batal',
+                        confirmText: 'Pilih',
+                      ).then((value) {
+                        setState(() {
+                          mount = value!.month.toString();
+                          day = value.day.toString().padLeft(2, '0');
+                          getOtd();
+                        });
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Color(0xff004A54),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '${day} ${
+                              mount == '1' ? 'Januari' :
+                              mount == '2' ? 'Februari' :
+                              mount == '3' ? 'Maret' :
+                              mount == '4' ? 'April' :
+                              mount == '5' ? 'Mei' :
+                              mount == '6' ? 'Juni' :
+                              mount == '7' ? 'Juli' :
+                              mount == '8' ? 'Agustus' :
+                              mount == '9' ? 'September' :
+                              mount == '10' ? 'Oktober' :
+                              mount == '11' ? 'November' :
+                              mount == '12' ? 'Desember' : ''
+                          }',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff004A54),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ),
+                ],
+              )
             ],
           ),
         ),
@@ -141,7 +188,10 @@ class _DetailOtdState extends State<DetailOtd> {
                                                 children: <Widget>[
                                                   Container(
                                                     margin: const EdgeInsets.only(bottom: 10),
-                                                    child: FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: onThisDayModel?.events![index].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png", width: 330, height: 230, fit: BoxFit.cover,),
+                                                    child: ClipRRect(
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                                        child: FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: onThisDayModel?.events![index].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png", width: 330, height: 230, fit: BoxFit.cover,)
+                                                    ),
                                                   ),
                                                   Container(
                                                     child: Column(
@@ -191,7 +241,7 @@ class _DetailOtdState extends State<DetailOtd> {
         },
 
       ) : Center(
-        child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),),
+      child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _scrollController.animateTo(

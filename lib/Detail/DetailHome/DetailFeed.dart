@@ -20,7 +20,7 @@ class _DetailFeedState extends State<DetailFeed> {
   bool loadingFeed = true;
   String year = DateTime.now().year.toString();
   String mount = DateTime.now().month.toString();
-  String day = DateTime.now().day.toString();
+  String day = DateTime.now().day.toString().padLeft(2, '0');
 
   void getFeedDetail() async{
     setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:thehorizonapps/SplashScreen/splashscreen.dart';
 import 'package:thehorizonapps/SplashScreen/splashscreentwo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,8 @@ Future<void> main() async {
       .then((_) {
     runApp(MyApp());
   });
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 }
 
 class MyApp extends StatelessWidget {

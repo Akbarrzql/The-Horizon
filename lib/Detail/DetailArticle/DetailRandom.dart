@@ -42,7 +42,7 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
   }
 
   //insert
-  Future<void> insertRandom(RandomModel randomModel) async {
+  Future<void> insertRandom(RandomModel randomModel, BuildContext context) async {
     final Database db = await database;
     await db.insert(
       'random',
@@ -52,9 +52,24 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
     setState(() {
       isFavorite = true;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            deleteRandom(randomModel, context);
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> deleteRandom(RandomModel? randomModel) async {
+  Future<void> deleteRandom(RandomModel? randomModel, BuildContext context) async {
     final db = await database;
     await db.delete(
       'random',
@@ -64,6 +79,21 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
     setState(() {
       isFavorite = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            insertRandom(randomModel!, context);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> readRandom(String? title) async {
@@ -102,7 +132,7 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
         ),
         actions: [
           IconButton(onPressed: (){
-            isFavorite ? deleteRandom(widget.randomModel) : insertRandom(widget.randomModel);
+            isFavorite ? deleteRandom(widget.randomModel, context) : insertRandom(widget.randomModel, context);
           }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
         ],
       ),

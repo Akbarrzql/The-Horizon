@@ -41,7 +41,7 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
   }
 
   //insert
-  Future<void> insertOtd(Pages pages) async {
+  Future<void> insertOtd(Pages pages, BuildContext context) async {
     final Database db = await database;
     await db.insert(
       'otd',
@@ -51,9 +51,24 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
     setState(() {
       isFavorite = true;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            deleteOtd(pages, context);
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> deleteOtd(Pages? pages) async {
+  Future<void> deleteOtd(Pages? pages, BuildContext context) async {
     final db = await database;
     await db.delete(
       'otd',
@@ -63,6 +78,21 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
     setState(() {
       isFavorite = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menghapus dari favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            insertOtd(pages, context);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> readOtd(String? normalizedtitle) async {
@@ -103,8 +133,9 @@ class _DetailOnthisdayState extends State<DetailOnthisday> {
         ),
         actions: [
           IconButton(onPressed: (){
-            isFavorite ? deleteOtd(widget.pages) : insertOtd(widget.pages);
-          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+            isFavorite ? deleteOtd(widget.pages, context) : insertOtd(widget.pages, context);
+          }, icon: isFavorite ?
+          Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
         ],
       ),
       body: WebView(

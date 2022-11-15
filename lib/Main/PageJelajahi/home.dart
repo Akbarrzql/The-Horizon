@@ -89,27 +89,26 @@ class _HomeState extends State<Home> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState!.show());
   }
 
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const SearchPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.1, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeIn;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    Route _createRoute() {
-      return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const SearchPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.1, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        },
-      );
-    }
-
     return Scaffold(
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -125,7 +124,7 @@ class _HomeState extends State<Home> {
                 Navigator.of(context).push(_createRoute());
               },
               child: Container(
-                margin: EdgeInsets.only(left: 10, right: 10, top: 10),
+                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
                 padding: EdgeInsets.only(left: 10, right: 10),
                 height: 50,
                 decoration: BoxDecoration(
@@ -314,7 +313,10 @@ class _HomeState extends State<Home> {
                   child: Row(
                       children: <Widget>[
                         Text("Lebih banyak sejarah pada hari ini", style: GoogleFonts.poppins(color: Color(0xff004A54), textStyle: TextStyle(fontSize: 16), fontWeight: FontWeight.w600),),
-                        Icon(Icons.arrow_forward, color: Color(0xff004A54),)
+                        Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          child: Icon(Icons.arrow_forward, color: Color(0xff004A54), size: 20,),
+                        )
                       ]
                   ),
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -663,7 +665,10 @@ class _HomeState extends State<Home> {
                   child: Row(
                       children: <Widget>[
                         Text("Lebih banyak bacaan tertas", style: GoogleFonts.poppins(color: Color(0xff004A54), textStyle: TextStyle(fontSize: 18), fontWeight: FontWeight.w600),),
-                        Icon(Icons.arrow_forward, color: Color(0xff004A54),)
+                        Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            child: Icon(Icons.arrow_forward, color: Color(0xff004A54), size: 20,)
+                        )
                       ]
                   ),
                   padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -726,10 +731,10 @@ class _HomeState extends State<Home> {
                             onPressed: () async{
                               //donwload image from link
                               var imageId = await ImageDownloader.downloadImage("https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80");
-                              if (imageId == null) {
+                              if (imageId != null) {
                                 return;
                               }
-                              var path = await ImageDownloader.findPath(imageId);
+                              var path = await ImageDownloader.findPath(imageId!);
                               print(path);
                             },
                             icon: Icon(Icons.file_download_outlined, size: 18),
@@ -856,7 +861,10 @@ class _HomeState extends State<Home> {
                   child: Row(
                       children: <Widget>[
                         Text("Artikel acak lebih banyak", style: GoogleFonts.poppins(color: Color(0xff004A54), textStyle: TextStyle(fontSize: 18), fontWeight: FontWeight.w600),),
-                        Icon(Icons.arrow_forward, color: Color(0xff004A54),)
+                        Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            child: Icon(Icons.arrow_forward, color: Color(0xff004A54), size: 20,)
+                        )
                       ]
                   ),
                   padding: const EdgeInsets.only(top: 5, bottom: 5),

@@ -35,9 +35,9 @@ class _splashscreentwoState extends State<splashscreentwo> {
         children: [
           Center(
             child: Image.asset(
-              "assets/logo_transparent.png",
-              width: 400.0,
-              height: 400.0,
+              "assets/logonew1.png",
+              width: 300.0,
+              height: 300.0,
               fit: BoxFit.contain,
             ),
           ),
