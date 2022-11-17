@@ -51,9 +51,10 @@ class _DetailOtdState extends State<DetailOtd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
         elevation: 0.5,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -70,6 +71,19 @@ class _DetailOtdState extends State<DetailOtd> {
                         helpText: 'Hari ini dalam sejarah',
                         cancelText: 'Batal',
                         confirmText: 'Pilih',
+                        builder: (BuildContext context, Widget? child) {
+                          return Theme(
+                            data: ThemeData.light().copyWith(
+                              colorScheme: ColorScheme.light(
+                                primary: Color(0xff042330),
+                              ),
+                              buttonTheme: ButtonThemeData(
+                                textTheme: ButtonTextTheme.primary,
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
                       ).then((value) {
                         setState(() {
                           mount = value!.month.toString();
@@ -82,7 +96,7 @@ class _DetailOtdState extends State<DetailOtd> {
                       children: [
                         Icon(
                           Icons.arrow_drop_down,
-                          color: Color(0xff004A54),
+                          color: Colors.white,
                         ),
                         SizedBox(
                           width: 5,
@@ -105,7 +119,7 @@ class _DetailOtdState extends State<DetailOtd> {
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xff004A54),
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -117,7 +131,7 @@ class _DetailOtdState extends State<DetailOtd> {
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       body: loadingOtd ? ListView.builder(
@@ -134,14 +148,14 @@ class _DetailOtdState extends State<DetailOtd> {
                           margin: EdgeInsets.only(left: 5, top: 10),
                           width: 40,
                           height: 40,
-                          child: Lottie.asset('assets/circleotd.json', width: 300, height: 300, fit: BoxFit.cover,),
+                          child: Lottie.asset('assets/circle.json', width: 300, height: 300, fit: BoxFit.cover,),
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10, top: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${onThisDayModel?.events![index].year ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Color(0xff004A54), fontSize: 20, fontWeight: FontWeight.w600),),
+                              Text("${onThisDayModel?.events![index].year ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
                             ],
                           ),
                         )
@@ -171,7 +185,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("${onThisDayModel?.events![index].text ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.black, fontSize: 14, fontWeight: FontWeight.normal),),
+                                        Text("${onThisDayModel?.events![index].text ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
                                         InkWell(
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
@@ -179,8 +193,10 @@ class _DetailOtdState extends State<DetailOtd> {
                                             )));
                                           },
                                           child: Card(
+                                            color: Color(0xff042330),
                                             shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.circular(10.0),
+                                              side: BorderSide(color: Colors.white),
                                             ),
                                             child: Container(
                                               width: 330,
@@ -203,7 +219,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                                             child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                Text("${onThisDayModel?.events![index].pages![0].normalizedtitle ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w700),),
+                                                                Text("${onThisDayModel?.events![index].pages![0].normalizedtitle ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
                                                                 const Divider(
                                                                   color: Colors.grey,
                                                                   height: 20,
@@ -211,7 +227,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                                                   indent: 0,
                                                                   endIndent: 200,
                                                                 ),
-                                                                Text("${onThisDayModel?.events![index].pages![0].description ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                Text("${onThisDayModel?.events![index].pages![0].description ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
                                                               ],
                                                             )
                                                         ),
@@ -241,7 +257,7 @@ class _DetailOtdState extends State<DetailOtd> {
         },
 
       ) : Center(
-      child: Lottie.asset('assets/loadingparticle.json', width: 300, height: 300, fit: BoxFit.cover,),),
+      child: Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,),),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _scrollController.animateTo(
@@ -250,7 +266,7 @@ class _DetailOtdState extends State<DetailOtd> {
               curve: Curves.fastOutSlowIn);
         },
         child: Icon(Icons.navigation, color: Colors.white,),
-        backgroundColor: Color(0xff004A54),
+        backgroundColor: Color(0xff5FD068),
       ),
     );
   }

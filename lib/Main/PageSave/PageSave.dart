@@ -15,6 +15,7 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       body: Container(
         width: 500,
         height: 500,
@@ -39,7 +40,7 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                             bottomRight: Radius.circular(5),
                           ),
                         ),
-                        color: Color(0xffA5C9CA),
+                        color: Color(0xff5FD068),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -48,11 +49,11 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(top: 35, left: 20),
-                                  child: Text('Sejarah Hari ini', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Color(0xff2C3333)),),
+                                  child: Text('Sejarah Hari ini', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white),),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 5, left: 20),
-                                  child: Text('Tersimpan dari Sejarah Hari ini', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0xff767676)),),
+                                  child: Text('Tersimpan dari Sejarah Hari ini', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white),),
                                 ),
                                 SizedBox(width: 50,),
                               ],
@@ -91,7 +92,7 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                             bottomRight: Radius.circular(5),
                           ),
                         ),
-                        color: Color(0xffA5C9CA),
+                        color: Color(0xff5FD068),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -100,11 +101,11 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(top: 35, left: 20),
-                                  child: Text('Bacaan teratas', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Color(0xff2C3333)),),
+                                  child: Text('Bacaan teratas', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white),),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 5, left: 20),
-                                  child:  Text('Tersimpan dari bacaan teratas',style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0xff767676)),),
+                                  child:  Text('Tersimpan dari bacaan teratas',style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white),),
                                 ),
                                 SizedBox(width: 50,),
                               ],
@@ -144,7 +145,7 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                             bottomRight: Radius.circular(5),
                           ),
                         ),
-                        color: Color(0xffA5C9CA),
+                        color: Color(0xff5FD068),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -153,11 +154,11 @@ class _PageSaveKategoriState extends State<PageSaveKategori> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(top: 35, left: 20),
-                                  child: Text('Artikel Acak', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Color(0xff2C3333)),),
+                                  child: Text('Artikel Acak', style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500, color: Colors.white),),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(top: 5, left: 20),
-                                  child:  Text('Tersimpan dari Artikel Acak', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0xff767676)),),
+                                  child:  Text('Tersimpan dari Artikel Acak', style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white),),
                                 ),
                                 SizedBox(width: 50,),
                               ],

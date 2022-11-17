@@ -17,26 +17,27 @@ class _DetailSearchState extends State<DetailSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               widgets.Image.asset(
-                'assets/logonew1.png',
+                'assets/newlogosmall.png',
                 fit: BoxFit.contain,
                 height: 50,
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
             ],
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       body: WebView(

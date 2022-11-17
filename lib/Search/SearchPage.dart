@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart' as widgets;
 import 'package:flutter/material.dart';
 import 'package:thehorizonapps/Model/SearchModel.dart';
 import 'package:thehorizonapps/Search/DetailSearch.dart';
-import 'package:thehorizonapps/Search/SearchPage.dart';
+import 'package:lottie/lottie.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -34,6 +34,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     final myController = TextEditingController();
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       body: Container(
         margin: const EdgeInsets.only(top: 50),
         child: Column(
@@ -44,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   IconButton(onPressed: (){
                     Navigator.pop(context);
-                  }, icon: Icon(Icons.arrow_back)),
+                  }, icon: Icon(Icons.arrow_back, color: Colors.white,)),
                   Expanded(
                     child: Container(
                       height: 40,
@@ -101,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(searchModel!.query.search[index].title.toString(), style: GoogleFonts.poppins(fontSize: 20),),
+                                    Text(searchModel!.query.search[index].title.toString(), style: GoogleFonts.poppins(fontSize: 20, color: Colors.white),),
                                   ],
                                 ),
                               ),
@@ -111,15 +112,9 @@ class _SearchPageState extends State<SearchPage> {
                     );
                   },
                 ) : Center(
-                  child: widgets.Image.asset(
-                    'assets/search2.gif',
-                    fit: BoxFit.contain,
-                    height: 250,
-                    width: 250,
-                  ),
+                  child: Lottie.asset('assets/loadingsearch.json', width: 250, height: 250, fit: BoxFit.contain,),),
                 ),
               ),
-            ),
           ],
         ),
       ),

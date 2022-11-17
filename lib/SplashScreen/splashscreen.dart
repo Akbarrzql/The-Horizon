@@ -19,7 +19,7 @@ class _splashscreenState extends State<splashscreen> {
     return Timer(duration, () {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const MainNav()),
-          (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false);
     });
   }
 
@@ -33,15 +33,16 @@ class _splashscreenState extends State<splashscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
             child: Image.asset(
-              "assets/logonew1.png",
-              width: 300.0,
-              height: 300.0,
+              "assets/newlogoupdate.png",
+              width: 400.0,
+              height: 400.0,
               fit: BoxFit.contain,
             ),
           ),

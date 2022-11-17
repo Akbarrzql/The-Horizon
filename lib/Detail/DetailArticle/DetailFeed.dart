@@ -109,32 +109,33 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
         elevation: 0.5,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               widgets.Image.asset(
-                'assets/logonew1.png',
+                'assets/newlogosmall.png',
                 fit: BoxFit.contain,
                 height: 50,
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
             ],
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
         actions: [
           IconButton(onPressed: (){
             isFavorite ? deleteNyt(widget.articles, context) : insertNyt(widget.articles, context);
-          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Color(0xff5FD068),) : Icon(Icons.bookmark_add_outlined, color: Color(0xff5FD068),)),
         ],
       ),
       body: WebView(

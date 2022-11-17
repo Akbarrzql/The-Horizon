@@ -124,6 +124,21 @@ flutter:
     - randomArticle.json
     - doneils.svg
     - circleotd.json
+    - circle.json
+    - newlogosmall.png
+    - newlogoupdate.png
+    - number-1.png
+    - number-2.png
+    - number-3.png
+    - number-4.png
+    - number-5.png
+    - random.png
+    - loadingsearch.json
+    - bookOnBoarding1.gif
+    - bookOnBoardingbook.gif
+    - loading-plane.gif
+    - OnBoarding3.gif
+    - OnBoarding2.gif
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

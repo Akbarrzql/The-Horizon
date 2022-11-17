@@ -75,27 +75,28 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
         elevation: 0.5,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               widgets.Image.asset(
-                'assets/logonew1.png',
+                'assets/newlogosmall.png',
                 fit: BoxFit.contain,
                 height: 50,
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
             ],
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       body: (
@@ -113,6 +114,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -134,7 +136,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                   },
                   child: Card(
                     elevation: 1,
-                    color: Colors.white,
+                    color: Color(0xff042330),
                     child: Container(
                       child: Row(
                         children: [
@@ -150,7 +152,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.black
+                                      color: Colors.white
                                     ),
                                   ),
                                 ),
@@ -162,7 +164,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
-                                        color: Colors.black
+                                        color: Colors.white
                                     ),
                                   ),
                                 ),
@@ -177,7 +179,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),
                                           elevation: 1,
-                                          color: Colors.black,
+                                          color: Color(0xff5FD068),
                                           child: Container(
                                             padding: EdgeInsets.all(3),
                                             child: Text(
@@ -185,7 +187,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                               style: GoogleFonts.poppins(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w600,
-                                                  color: Colors.white
+                                                  color: Color(0xff042330),
                                               ),
                                             ),
                                           ),
@@ -207,19 +209,19 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                                   context: context,
                                                   builder: (BuildContext context) {
                                                     return AlertDialog(
-                                                      backgroundColor: Color(0xff2C3333),
+                                                      backgroundColor: Color(0xff042330),
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.circular(20.0),
                                                       ),
                                                       //width and height of alert dialog
-                                                      title: Text("Hapus!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Color(0xffFFC898))), textAlign: TextAlign.center,),
+                                                      title: Text("Hapus!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Colors.red)), textAlign: TextAlign.center,),
                                                       content: Text("Apakah anda yakin ingin menhapus artikel ini?", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),textAlign: TextAlign.center,),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {
                                                             Navigator.of(context).pop();
                                                           },
-                                                          child: Text("Tidak", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Color(0xffFFC898))),),
+                                                          child: Text("Tidak", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
@@ -229,7 +231,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                                             });
                                                             Navigator.of(context).pop();
                                                           },
-                                                          child: Text("Ya", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Color(0xffFFC898))),),
+                                                          child: Text("Ya", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),),
                                                         ),
                                                       ],
                                                     );
@@ -242,7 +244,7 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                         ),
                                     ],
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           )

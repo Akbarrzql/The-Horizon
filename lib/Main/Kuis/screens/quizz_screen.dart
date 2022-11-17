@@ -29,7 +29,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.pripmaryColor,
+      backgroundColor: Color(0xff042330),
       body: Padding(
           padding: const EdgeInsets.all(18.0),
           child: PageView.builder(
@@ -55,7 +55,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                       "${index + 1}/10",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20.0,
                       ),
                     ),
@@ -69,7 +69,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                       child: Text(
                         "${questions[index].question}",
                         style: GoogleFonts.poppins(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 22.0,
                           fontWeight: FontWeight.w700,
                         ),
@@ -87,14 +87,14 @@ class _QuizzScreenState extends State<QuizzScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                           side: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ),
                         fillColor: btnPressed
                             ? questions[index].answers!.values.toList()[i]
                                 ? Colors.green
                                 : Colors.red
-                            : AppColor.pripmaryColor,
+                            : Color(0xff042330),
                         onPressed: !answered
                             ? () {
                                 if (questions[index]
@@ -115,7 +115,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                         child: Text(questions[index].answers!.keys.toList()[i],
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontSize: 18.0,
                             )),
                       ),
@@ -123,7 +123,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                   SizedBox(
                     height: 40.0,
                   ),
-                  InkWell(
+                  GestureDetector(
                     onTap:(){
                       //if answer not selected then show alert
                       if(!answered) {
@@ -134,14 +134,23 @@ class _QuizzScreenState extends State<QuizzScreen> {
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             //width and height of alert dialog
-                            title: Text("Jawaban belum terisi!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Color(0xffFFC898))), textAlign: TextAlign.center,),
+                            title: Text("Jawaban belum terisi!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Colors.red)), textAlign: TextAlign.center,),
                             content: Text("Silahkan Isi Jawaban Dengan baik dan benar", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),textAlign: TextAlign.center,),
                             actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text("OK", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Color(0xffFFC898))),),
+                              //elevated button in center
+                              Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff5FD068),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("OK", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),),
+                                ),
                               ),
                             ],
                           );
@@ -162,8 +171,8 @@ class _QuizzScreenState extends State<QuizzScreen> {
                       margin: EdgeInsets.only(top: 20.0),
                       padding: EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
-                        border: Border.all(color: answered ? Color(0xff004A54) : Colors.grey),
-                        color: answered ? Color(0xff004A54) : Colors.grey,
+                        border: Border.all(color: answered ? Color(0xff5FD068) : Colors.grey),
+                        color: answered ? Color(0xff5FD068) : Colors.grey,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: Row(

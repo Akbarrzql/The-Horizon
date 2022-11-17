@@ -1,6 +1,6 @@
 import 'dart:ui';
 
 class AppColor {
-  static final pripmaryColor = Color(0xFFFFFFFF);
-  static final secondaryColor = Color(0xFF000000);
+  static final pripmaryColor = Color(0xFF042330);
+  static final secondaryColor = Color(0xFFFFFFFF);
 }
