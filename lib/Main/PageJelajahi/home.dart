@@ -8,17 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/src/widgets/image.dart' as image;
 import 'package:flutter/services.dart' as rootBundle;
-import 'package:image_downloader/image_downloader.dart';
 import 'package:lottie/lottie.dart';
 import 'package:share/share.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailRandom.dart';
+import 'package:thehorizonapps/Detail/DetailEditionHistory/HistoryEdition.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailRandom.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
 import 'package:thehorizonapps/Detail/DetailImage/DetailImage.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
+import 'package:thehorizonapps/Model/HistoryModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 import 'package:thehorizonapps/Model/RandomModel.dart';
@@ -55,7 +56,7 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/23'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
     print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
@@ -72,10 +73,18 @@ class _HomeState extends State<Home> {
     return getFeed();
   }
 
+  //randomArticle Json
   Future<List<RandomModel>> ReadJsonData() async {
     final jsondata = await rootBundle.rootBundle.loadString('assets/randomArticle.json');
     final list = json.decode(jsondata) as List<dynamic>;
     return list.map((e) => RandomModel.fromJson(e)).toList();
+  }
+
+  //HistoryEdition Json
+  Future<List<HistoryModel>> ReadJsonHistoryData() async {
+    final jsondata = await rootBundle.rootBundle.loadString('assets/HistoryEdition.json');
+    final list = json.decode(jsondata) as List<dynamic>;
+    return list.map((e) => HistoryModel.fromJson(e)).toList();
   }
 
 
@@ -695,91 +704,111 @@ class _HomeState extends State<Home> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Gambar Pilihan", style: GoogleFonts.poppins(color: Color(0xff004A54), textStyle: TextStyle(fontSize: 24), fontWeight: FontWeight.w600),),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Edisi Sejarah", style: GoogleFonts.poppins(color: Colors.white, textStyle: TextStyle(fontSize: 24), fontWeight: FontWeight.w600),),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text("Kami pikir Anda akan menyukai", style: GoogleFonts.poppins(color: Color(0xffCBCBCB), textStyle: TextStyle(fontSize: 14), fontWeight: FontWeight.w400),),
+                      ]
+                    )
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailImage()));
+              //Edisi Sejarah
+              FutureBuilder(
+                future: ReadJsonHistoryData(),
+                builder: (context, data) {
+                  if (data.hasError) {
+                    return ScaffoldMessenger(child: Text("${data.error}"));
+                  } else if (data.hasData) {
+                    var items = data.data as List<HistoryModel>;
+                    //if card is finish then show finish page
+                    if (items.isEmpty) {
+                      return ScaffoldMessenger(child: Text("Finish"));
+                    } else {
+                      return SizedBox(
+                        height: 310,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailHistoryEdition(
+                                      historyModel: items[index],
+                                    )));
+                                  },
+                                  //ui blinkist
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                                    child: Column(
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: 200,
+                                              width: 200,
+                                              child: Card(
+                                                margin: EdgeInsets.only(top: 90),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.only(
+                                                      topLeft: Radius.circular(100),
+                                                      topRight: Radius.circular(100),
+                                                      bottomLeft: Radius.circular(5),
+                                                      bottomRight: Radius.circular(5)
+                                                  ),
+                                                ),
+                                                color: Color(0xff5FD068),
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Container(
+                                                width: 130,
+                                                height: 170,
+                                                margin: const EdgeInsets.only(top: 10, left: 35),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5), // Image border
+                                                  child: SizedBox.fromSize(
+                                                    size: Size.fromRadius(30), // Image radius
+                                                    child: widgets.Image.network('${items[index].image}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          width: 200,
+                                          margin: const EdgeInsets.only(top: 10),
+                                          child: Text("${items[index].namaSejarah}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                        ),
+                                        Container(
+                                          width: 200,
+                                          margin: const EdgeInsets.only(top: 5),
+                                          child: Text("${items[index].author}", style: GoogleFonts.poppins(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.normal),),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                              );
+                            },
+                          ),
+                      );
+                    }
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
-                  ),
-                  child: Container(
-                    width: 330,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          //image radius
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                              child: widgets.FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: 'https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80', fit: BoxFit.cover)
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                                  width: 300,
-                                  child: Column(
-                                    children: [
-                                      Text("Congreve Street, Birmingham, showing Christ Church and the Town Hall, By Laurence J Hart", style: GoogleFonts.poppins(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w600),),
-                                    ],
-                                  )
-                              ),
-                              ButtonBar(
-                                alignment: MainAxisAlignment.start,
-                                children: [
-                                  ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Color(0xff004A54),
-                                      onPrimary: Colors.white,
-                                    ),
-                                    onPressed: () async{
-                                      //donwload image from link
-                                      var imageId = await ImageDownloader.downloadImage("https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80");
-                                      if (imageId != null) {
-                                        return;
-                                      }
-                                      var path = await ImageDownloader.findPath(imageId!);
-                                      print(path);
-                                    },
-                                    icon: Icon(Icons.file_download_outlined, size: 18),
-                                    label: Text("UNDUH"),
-                                  ),
-                                  ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Color(0xff004A54),
-                                      onPrimary: Colors.white,
-                                    ),
-                                    onPressed: () async {
-                                      // Respond to button press
-                                      //share image
-                                      final urlImage = "https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80";
-
-                                      await Share.share('Congreve Street, Birmingham, showing Christ Church and the Town Hall, By Laurence J Hart $urlImage');
-                                    },
-                                    icon: Icon(Icons.share, size: 18),
-                                    label: Text("BAGIKAN"),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
               ),
               Container(
-                margin: const EdgeInsets.only(top:50, left: 15),
+                margin: const EdgeInsets.only(top:25, left: 15),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

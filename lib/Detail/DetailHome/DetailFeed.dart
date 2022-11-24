@@ -29,7 +29,7 @@ class _DetailFeedState extends State<DetailFeed> {
     setState(() {
       loadingFeed = false;
     });
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/23'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
     print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");

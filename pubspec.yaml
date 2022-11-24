@@ -41,7 +41,6 @@ dependencies:
   google_fonts: ^3.0.1
   http:
   url_launcher: ^6.1.5
-  image_downloader: ^0.31.0
   flutter_downloader: ^1.8.4
   share: ^2.0.4
   share_plus: ^6.0.1
@@ -53,6 +52,7 @@ dependencies:
   swipeable_card_stack: ^0.0.5
   flutter_tindercard: ^0.2.0
   font_awesome_flutter: ^10.2.1
+  flutter_tts:
 
 
 dev_dependencies:
@@ -69,7 +69,6 @@ dev_dependencies:
   shared_preferences: ^2.0.15
   google_fonts: ^3.0.1
   url_launcher: ^6.1.5
-  image_downloader: ^0.31.0
   webview_flutter: ^3.0.4
   sqflite: ^2.1.0
   path_provider: ^2.0.11
@@ -77,6 +76,7 @@ dev_dependencies:
   json_serializable: ^5.0.0
   build_runner: ^2.0.0
   flutter_downloader: ^1.8.4
+  flutter_tts:
 
 
 # For information on the generic Dart part of this file, see the
@@ -100,11 +100,6 @@ flutter:
     - logo_app_bar.png
     - logonew.png
     - logonew1.png
-    - one.png
-    - two.png
-    - three.png
-    - four.png
-    - five.png
     - loading.gif
     - bg.svg
     - clock.svg
@@ -139,6 +134,8 @@ flutter:
     - loading-plane.gif
     - OnBoarding3.gif
     - OnBoarding2.gif
+    - HistoryEdition.json
+    - card.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
