@@ -59,7 +59,7 @@ class _MainNavState extends State<MainNav> {
           )
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xff002F54),
+        backgroundColor: Color(0xff042330),
         elevation: 2,
         showUnselectedLabels: true,
         unselectedItemColor: Colors.white,
@@ -68,7 +68,7 @@ class _MainNavState extends State<MainNav> {
         selectedItemColor: Color(0xff5FD068),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.public),
+            icon: Icon(Icons.home_filled),
             label: 'Jelajahi',
           ),
           BottomNavigationBarItem(

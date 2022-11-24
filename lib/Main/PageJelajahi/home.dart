@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/23'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
     print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
