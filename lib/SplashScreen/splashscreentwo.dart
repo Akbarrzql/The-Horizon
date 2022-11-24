@@ -29,13 +29,14 @@ class _splashscreentwoState extends State<splashscreentwo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
             child: Image.asset(
-              "assets/logo_transparent.png",
+              "assets/newlogoupdate.png",
               width: 400.0,
               height: 400.0,
               fit: BoxFit.contain,

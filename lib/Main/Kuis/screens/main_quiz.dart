@@ -14,7 +14,7 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xff042330),
       body: Center(
         child: Container(
           child:Stack(
@@ -26,7 +26,8 @@ class _MainMenuState extends State<MainMenu> {
                         width: 300,
                         height: 300,
                         child: Card(
-                          color: Color(0xff004A54),
+                          elevation: 0,
+                          color: Color(0xff042330),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50.0),
                           ),
@@ -65,7 +66,7 @@ class _MainMenuState extends State<MainMenu> {
                 margin: EdgeInsets.only(top: 370.0, left: 110),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black,
+                    primary: Color(0xff5FD068),
                     onPrimary: Colors.white,
                     //height and width
                     minimumSize: Size(150, 50),

@@ -34,19 +34,19 @@ class _MainNavState extends State<MainNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff042330),
         elevation: 0.5,
-        backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
-              'assets/logonew1.png',
+              'assets/newlogosmall.png',
               fit: BoxFit.contain,
               height: 50,
               width: 50,
             ),
             Container(
-                padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
           ],
         ),
         //no back button
@@ -59,10 +59,13 @@ class _MainNavState extends State<MainNav> {
           )
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff002F54),
         elevation: 2,
-        unselectedIconTheme: IconThemeData(color: Colors.black),
-        selectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.white,
+        unselectedIconTheme: IconThemeData(color: Colors.white),
+        selectedIconTheme: IconThemeData(color: Color(0xff5FD068)),
+        selectedItemColor: Color(0xff5FD068),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.public),
@@ -71,12 +74,12 @@ class _MainNavState extends State<MainNav> {
           BottomNavigationBarItem(
             icon: Icon(Icons.bookmark_border_outlined),
             label: 'Simpan',
-            activeIcon: Icon(Icons.bookmark),
+            activeIcon: Icon(Icons.bookmark, color: Color(0xff5FD068),),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.quiz_outlined),
             label: 'Kuis',
-            activeIcon: Icon(Icons.quiz),
+            activeIcon: Icon(Icons.quiz, color: Color(0xff5FD068),),
           ),
         ],
         currentIndex: _selectedIndex, //New

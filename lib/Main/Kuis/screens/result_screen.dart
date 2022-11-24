@@ -15,7 +15,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         body: Center(
           child: Container(
               child:Stack(
@@ -27,7 +27,8 @@ class _ResultScreenState extends State<ResultScreen> {
                             width: 300,
                             height: 300,
                             child: Card(
-                              color: Color(0xff004A54),
+                              elevation: 0,
+                              color: Color(0xff042330),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
@@ -46,13 +47,23 @@ class _ResultScreenState extends State<ResultScreen> {
                                         textAlign: TextAlign.center,
                                       ),
                                       Container(
+                                        margin: EdgeInsets.only(top: 5, left: 20, right: 20),
+                                        child: Text("Bagaimana kuisnya seru ngga? tentunya seru dong", style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Container(
                                         margin: EdgeInsets.only(top: 15.0),
                                         child: Text(
                                           "Hasil kuis yang benar: ${widget.score}",
                                           style: TextStyle(
-                                            color: Colors.orange,
+                                            color: Color(0xff5FD068),
                                             fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w300,
                                           ),
                                         ),
                                       )
@@ -73,12 +84,12 @@ class _ResultScreenState extends State<ResultScreen> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 470.0, left: 85),
+                    margin: EdgeInsets.only(top: 490.0, left: 85),
                     child: Row(
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            primary: Color(0xff5FD068),
                             onPrimary: Colors.white,
                             //height and width
                             minimumSize: Size(50, 50),
@@ -86,12 +97,14 @@ class _ResultScreenState extends State<ResultScreen> {
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => MainNav()));
                           },
-                          child: Text("Selesai"),
+                          child: Text("Selesai", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),),
                         ),
                         SizedBox(width: 20,),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            primary: Colors.red,
                             onPrimary: Colors.white,
                             //height and width
                             minimumSize: Size(100, 50),
@@ -99,7 +112,9 @@ class _ResultScreenState extends State<ResultScreen> {
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => QuizzScreen()));
                           },
-                          child: Text("Coba Lagi"),
+                          child: Text("Coba Lagi", style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),),
                         ),
                       ],
                     ),

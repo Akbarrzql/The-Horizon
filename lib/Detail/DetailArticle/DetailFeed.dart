@@ -41,7 +41,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   //insert
-  Future<void> insertNyt(Articles articles) async {
+  Future<void> insertNyt(Articles articles, BuildContext context) async {
     final Database db = await database;
     await db.insert(
       'feed',
@@ -51,9 +51,24 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       isFavorite = true;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            deleteNyt(articles, context);
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> deleteNyt(Articles? articles) async {
+  Future<void> deleteNyt(Articles? articles, BuildContext context) async {
     final db = await database;
     await db.delete(
       'feed',
@@ -63,6 +78,21 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       isFavorite = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menghapus dari favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            insertNyt(articles, context);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> readNyt(String? normalizedtitle) async {
@@ -79,32 +109,33 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
         elevation: 0.5,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               widgets.Image.asset(
-                'assets/logonew1.png',
+                'assets/newlogosmall.png',
                 fit: BoxFit.contain,
                 height: 50,
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
             ],
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
         actions: [
           IconButton(onPressed: (){
-            isFavorite ? deleteNyt(widget.articles) : insertNyt(widget.articles);
-          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+            isFavorite ? deleteNyt(widget.articles, context) : insertNyt(widget.articles, context);
+          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Color(0xff5FD068),) : Icon(Icons.bookmark_add_outlined, color: Color(0xff5FD068),)),
         ],
       ),
       body: WebView(

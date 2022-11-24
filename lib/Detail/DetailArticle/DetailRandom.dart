@@ -42,7 +42,7 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
   }
 
   //insert
-  Future<void> insertRandom(RandomModel randomModel) async {
+  Future<void> insertRandom(RandomModel randomModel, BuildContext context) async {
     final Database db = await database;
     await db.insert(
       'random',
@@ -52,9 +52,24 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
     setState(() {
       isFavorite = true;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            deleteRandom(randomModel, context);
+          },
+        ),
+      ),
+    );
   }
 
-  Future<void> deleteRandom(RandomModel? randomModel) async {
+  Future<void> deleteRandom(RandomModel? randomModel, BuildContext context) async {
     final db = await database;
     await db.delete(
       'random',
@@ -64,6 +79,21 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
     setState(() {
       isFavorite = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.blueGrey,
+        margin: EdgeInsets.all(20),
+        content: Text('Menambahkan ke favorit'),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Urungkan',
+          textColor: Colors.white,
+          onPressed: (){
+            insertRandom(randomModel!, context);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> readRandom(String? title) async {
@@ -79,31 +109,32 @@ class _DetailArticleRandomState extends State<DetailArticleRandom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff042330),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff042330),
         title: Container(
           margin: const EdgeInsets.only(left: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/logonew1.png',
+                'assets/newlogosmall.png',
                 fit: BoxFit.contain,
                 height: 50,
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.black),)),
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
             ],
           ),
         ),
         leading: const BackButton(
-          color: Colors.black,
+          color: Colors.white,
         ),
         actions: [
           IconButton(onPressed: (){
-            isFavorite ? deleteRandom(widget.randomModel) : insertRandom(widget.randomModel);
-          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Colors.black,) : Icon(Icons.bookmark_add_outlined, color: Colors.black,)),
+            isFavorite ? deleteRandom(widget.randomModel, context) : insertRandom(widget.randomModel, context);
+          }, icon: isFavorite ? Icon(Icons.bookmark_added, color: Color(0xff5FD068),) : Icon(Icons.bookmark_add_outlined, color: Color(0xff5FD068),)),
         ],
       ),
       //web view for detail article
