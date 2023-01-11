@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "352631530210",
+    "project_id": "thehorizon-c6c4f",
+    "storage_bucket": "thehorizon-c6c4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352631530210:android:e3c1a9526dc489d47e74bb",
+        "android_client_info": {
+          "package_name": "com.example.thehorizonapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352631530210-bdhp7rjvjjvs24ko1se8cplaoejve4ao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thehorizonapps",
+            "certificate_hash": "20bd87f97629dcbc26c1815e8acaa80502ecb0ee"
+          }
+        },
+        {
+          "client_id": "352631530210-ts8haqn1etopt7n1v477hdphjocs28nk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpmwf7k-tlgVbJMo31LTW5NezVbymdWog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352631530210-ts8haqn1etopt7n1v477hdphjocs28nk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -66,8 +66,8 @@ class _DetailOtdState extends State<DetailOtd> {
                       showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime.utc(2022, 1, 1),
-                        lastDate: DateTime.utc(2022, 12, 31),
+                        firstDate: DateTime.utc(2023, 1, 1),
+                        lastDate: DateTime.utc(2023, 12, 31),
                         helpText: 'Hari ini dalam sejarah',
                         cancelText: 'Batal',
                         confirmText: 'Pilih',
