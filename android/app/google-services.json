@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1036458352165",
+    "project_id": "thehorizon-a6a02",
+    "storage_bucket": "thehorizon-a6a02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036458352165:android:23a32c010498f2629c69cc",
+        "android_client_info": {
+          "package_name": "com.example.thehorizonapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036458352165-4vtpri1nsfbfbivnu27uvqug8u2r9v8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thehorizonapps",
+            "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
+          }
+        },
+        {
+          "client_id": "1036458352165-o090th6j0b20cf06khpidbgj1dc7nk56.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1kRfr_Vt103SSuYDaXpZxi3vcx3-RI7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036458352165-o090th6j0b20cf06khpidbgj1dc7nk56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
