@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/SplashScreen/splashscreen.dart';
 import 'package:thehorizonapps/SplashScreen/splashscreentwo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await PushNotificationConfig().requestPermission();
   await PushNotificationConfig().androidNotificationChanel();
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = prefs.getInt('initScreen');
   await prefs.setInt('initScreen', 1);
@@ -50,6 +52,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
+        textTheme: GoogleFonts.poppinsTextTheme(),
         primarySwatch: Colors.blueGrey,
       ),
       debugShowCheckedModeBanner: false,

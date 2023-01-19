@@ -57,6 +57,14 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_messaging: ^14.2.1
   overlay_support: ^2.1.0
+  carousel_pro:
+    git:
+      url: https://github.com/jlouage/flutter-carousel-pro.git
+      ref: master
+  flutter_svg: ^1.1.6
+  firebase_auth: ^4.2.5
+  google_sign_in: ^5.4.3
+
 
 
 dev_dependencies:
@@ -85,6 +93,11 @@ dev_dependencies:
   firebase_core: ^2.4.1
   firebase_messaging: ^14.2.1
   flutter_local_notifications: ^13.0.0
+  google_sign_in: ^5.4.3
+  carousel_pro:
+    git:
+      url: https://github.com/jlouage/flutter-carousel-pro.git
+      ref: master
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -143,6 +156,8 @@ flutter:
     - OnBoarding2.gif
     - HistoryEdition.json
     - card.png
+    - logo_horizon_login.svg
+    - assets/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
