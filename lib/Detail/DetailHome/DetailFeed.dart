@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailFeed.dart';
@@ -17,25 +18,21 @@ class DetailFeed extends StatefulWidget {
 class _DetailFeedState extends State<DetailFeed> {
 
   FeedModel? feedModel;
-  bool loadingFeed = true;
+  var loadingFeed = true.obs;
   String year = DateTime.now().year.toString();
-  String mount = DateTime.now().month.toString();
+  String mount = DateTime.now().month.toString().padLeft(2, '0');
   String day = DateTime.now().day.toString().padLeft(2, '0');
   bool _pinned = true;
   bool _snap = false;
   bool _floating = false;
 
   void getFeedDetail() async{
-    setState(() {
-      loadingFeed = false;
-    });
+    loadingFeed(true);
     final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
-    print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
-    setState(() {
-      loadingFeed = true;
-    });
+    loadingFeed(false);
+
   }
 
   @override
@@ -61,9 +58,13 @@ class _DetailFeedState extends State<DetailFeed> {
               title: Text('Bacaan Teratas TheHorizon'),
             ),
           ),
-          SliverList(delegate: SliverChildBuilderDelegate(
-            childCount: feedModel?.mostread!.articles!.length,
-                (BuildContext context, int index) {
+          Obx(() => loadingFeed.value ? SliverFillRemaining(
+            child: Center(
+              child: widgets.Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,),
+            ),
+          ) : SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
                 return Container(
                   child: Column(
                     children: [
@@ -85,30 +86,30 @@ class _DetailFeedState extends State<DetailFeed> {
                                           Container(
                                             margin: const EdgeInsets.only(top: 10, left: 15,),
                                             child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Container(
-                                                width: MediaQuery.of(context).size.width * 0.6,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("${feedModel?.mostread!.articles![index].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![index].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                  ],
+                                                    width: MediaQuery.of(context).size.width * 0.6,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("${feedModel?.mostread!.articles![index].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                                        Text("${feedModel?.mostread!.articles![index].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                      ],
+                                                    )
                                                 )
-                                              )
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Container(
-                                        margin: const EdgeInsets.only(top: 10, bottom: 10, left: 60),
-                                          child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(20), // Image border
-                                            child: SizedBox.fromSize(
-                                              size: Size.fromRadius(30), // Image radius
-                                              child: widgets.Image.network("${feedModel?.mostread!.articles![index].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
-                                              ),
-                                            )
+                                          Container(
+                                              margin: const EdgeInsets.only(top: 10, bottom: 10, left: 60),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20), // Image border
+                                                child: SizedBox.fromSize(
+                                                  size: Size.fromRadius(30), // Image radius
+                                                  child: widgets.Image.network("${feedModel?.mostread!.articles![index].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                ),
+                                              )
                                           )
                                         ],
                                       ),
@@ -131,8 +132,9 @@ class _DetailFeedState extends State<DetailFeed> {
                   ),
                 );
               },
+              childCount: feedModel!.mostread!.articles!.length,
             ),
-          ),
+          )),
         ],
       ),
     );

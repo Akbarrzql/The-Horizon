@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -34,3 +35,4 @@ class DataController extends GetxController{
     isDataLoading(false);
   }
 }
+

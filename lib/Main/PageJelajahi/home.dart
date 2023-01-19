@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' as widgets;
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,12 +20,12 @@ import 'package:thehorizonapps/Detail/DetailEditionHistory/HistoryEdition.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailRandom.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
-import 'package:thehorizonapps/Detail/DetailImage/DetailImage.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/HistoryModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 import 'package:thehorizonapps/Model/RandomModel.dart';
+import 'package:thehorizonapps/controller/Controller.dart';
 
 
 class Home extends StatefulWidget {
@@ -37,7 +40,7 @@ class _HomeState extends State<Home> {
   //Model and variable
   FeedModel? feedModel;
   OnThisDayModel? onThisDayModel;
-  bool loading = true;
+  var loading = true.obs;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
   String year = DateTime.now().year.toString();
@@ -45,10 +48,11 @@ class _HomeState extends State<Home> {
   String day = DateTime.now().day.toString().padLeft(2, '0');
 
 
+
   //get data
   getFeed() async {
     setState(() {
-      loading = false;
+      loading(true);
     });
 
     final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
@@ -59,12 +63,11 @@ class _HomeState extends State<Home> {
     final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
-    print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
 
 
 
     setState(() {
-      loading = true;
+      loading(false);
     });
   }
 

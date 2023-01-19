@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/widgets.dart' as widgets;
-import 'dart:convert';
+
+import 'package:thehorizonapps/controller/Controller.dart';
 
 class DetailOtd extends StatefulWidget {
   const DetailOtd({Key? key}) : super(key: key);
@@ -16,37 +16,14 @@ class DetailOtd extends StatefulWidget {
 
 class _DetailOtdState extends State<DetailOtd> {
 
-  OnThisDayModel? onThisDayModel;
   bool loadingOtd = true;
   bool isVisiblemage =  true;
   final ScrollController _scrollController = ScrollController();
+  DataController dataController = Get.put(DataController());
   //get mount
   String mount = DateTime.now().month.toString();
   //get day
   String day = DateTime.now().day.toString().padLeft(2, '0');
-
-
-  void getOtd() async{
-    setState(() {
-      loadingOtd = false;
-    });
-    final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
-    print("Response status: ${responseOtd.statusCode}");
-    onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
-    print("Response body: ${onThisDayModel?.events![0].text}");
-    setState(() {
-      loadingOtd = true;
-    });
-  }
-
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getOtd();
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +62,7 @@ class _DetailOtdState extends State<DetailOtd> {
                           );
                         },
                       ).then((value) {
-                        setState(() {
-                          mount = value!.month.toString();
-                          day = value.day.toString().padLeft(2, '0');
-                          getOtd();
-                        });
+                        dataController.getApi(value!.month.toString(), value.day.toString().padLeft(2, '0'));
                       });
                     },
                     child: Row(
@@ -134,9 +107,11 @@ class _DetailOtdState extends State<DetailOtd> {
           color: Colors.white,
         ),
       ),
-      body: loadingOtd ? ListView.builder(
+      body: Obx(()=> dataController.isDataLoading.value ? Center(
+        child: Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,) ,)
+      : ListView.builder(
         controller: _scrollController,
-        itemCount: onThisDayModel?.events?.length,
+        itemCount:  dataController.onThisDayModel?.events?.length,
         itemBuilder: (context, index) {
           return Container(
             child: Column(
@@ -155,7 +130,7 @@ class _DetailOtdState extends State<DetailOtd> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${onThisDayModel?.events![index].year ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
+                              Text("${ dataController.onThisDayModel?.events![index].year ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
                             ],
                           ),
                         )
@@ -185,11 +160,11 @@ class _DetailOtdState extends State<DetailOtd> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text("${onThisDayModel?.events![index].text ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
+                                        Text("${ dataController.onThisDayModel?.events![index].text ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
                                         InkWell(
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
-                                              pages: onThisDayModel!.events![index].pages![0],
+                                              pages:  dataController.onThisDayModel!.events![index].pages![0],
                                             )));
                                           },
                                           child: Card(
@@ -206,7 +181,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                                     margin: const EdgeInsets.only(bottom: 10),
                                                     child: ClipRRect(
                                                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                                                        child: FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: onThisDayModel?.events![index].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png", width: 330, height: 230, fit: BoxFit.cover,)
+                                                        child: FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: dataController.onThisDayModel?.events![index].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png", width: 330, height: 230, fit: BoxFit.cover,)
                                                     ),
                                                   ),
                                                   Container(
@@ -219,7 +194,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                                             child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                               children: [
-                                                                Text("${onThisDayModel?.events![index].pages![0].normalizedtitle ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
+                                                                Text("${ dataController.onThisDayModel?.events![index].pages![0].normalizedtitle ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
                                                                 const Divider(
                                                                   color: Colors.grey,
                                                                   height: 20,
@@ -227,7 +202,7 @@ class _DetailOtdState extends State<DetailOtd> {
                                                                   indent: 0,
                                                                   endIndent: 200,
                                                                 ),
-                                                                Text("${onThisDayModel?.events![index].pages![0].description ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                Text("${ dataController.onThisDayModel?.events![index].pages![0].description ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
                                                               ],
                                                             )
                                                         ),
@@ -256,8 +231,7 @@ class _DetailOtdState extends State<DetailOtd> {
           );
         },
 
-      ) : Center(
-      child: Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,),),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _scrollController.animateTo(
