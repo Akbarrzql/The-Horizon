@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thehorizonapps/Login/SignUp.dart';
-import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/Main/bottomnav.dart';
 import 'package:thehorizonapps/firebase/authController.dart';
-
-import '../firebase/authController.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -54,7 +51,7 @@ class _LoginState extends State<Login> {
                           validator: (val) =>
                           val!.isEmpty ? 'Mohon Masukkan Email Anda!' : null,
                           style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
                             enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
                             border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
@@ -103,7 +100,6 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton(onPressed: (){
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-
                               AuthenticationHelper()
                                   .signIn(email: email.text, password: password.text)
                                   .then((ok) {

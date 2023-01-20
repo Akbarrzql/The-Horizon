@@ -20,10 +20,6 @@
             "package_name": "com.example.thehorizonapps",
             "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
           }
-        },
-        {
-          "client_id": "1036458352165-o090th6j0b20cf06khpidbgj1dc7nk56.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -33,12 +29,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1036458352165-o090th6j0b20cf06khpidbgj1dc7nk56.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
