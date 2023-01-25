@@ -112,51 +112,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - logo.png
-    - logo_transparent.png
-    - book.gif
-    - education.gif
-    - globe.gif
-    - logo_app_bar.png
-    - logonew.png
-    - logonew1.png
-    - loading.gif
-    - bg.svg
-    - clock.svg
-    - astronaut.gif
-    - robot.gif
-    - circle.gif
-    - search.gif
-    - search2.gif
-    - artikelacak.jpg
-    - tersimpansejarah.jpg
-    - tersimpanteratas.jpg
-    - spaceloading.gif
-    - spaceload.gif
-    - space.gif
-    - pingpong.json
-    - loadingparticle.json
-    - randomArticle.json
-    - doneils.svg
-    - circleotd.json
-    - circle.json
-    - newlogosmall.png
-    - newlogoupdate.png
-    - number-1.png
-    - number-2.png
-    - number-3.png
-    - number-4.png
-    - number-5.png
-    - random.png
-    - loadingsearch.json
-    - bookOnBoarding1.gif
-    - bookOnBoardingbook.gif
-    - loading-plane.gif
-    - OnBoarding3.gif
-    - OnBoarding2.gif
-    - HistoryEdition.json
-    - card.png
-    - logo_horizon_login.svg
     - assets/
 
 

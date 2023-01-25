@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thehorizonapps/Login/SignUp.dart';
 import 'package:thehorizonapps/Main/bottomnav.dart';
 import 'package:thehorizonapps/firebase/authController.dart';
@@ -171,7 +170,11 @@ class _LoginState extends State<Login> {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                              icon: SvgPicture.asset("assets/google.svg", height: 20,),
+                              icon: Image.asset(
+                                "assets/flat-color-icons_google.png",
+                                width: 24,
+                                height: 24,
+                              ),
                               label: Text("Log in with Google", style: TextStyle(color: Color(0xff042330),fontWeight: FontWeight.bold, fontSize: 15),)),
                         ),
                         SizedBox(height: 50,),
