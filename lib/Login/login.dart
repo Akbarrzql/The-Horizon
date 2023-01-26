@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thehorizonapps/Login/SignUp.dart';
 import 'package:thehorizonapps/Main/bottomnav.dart';
 import 'package:thehorizonapps/firebase/authController.dart';
