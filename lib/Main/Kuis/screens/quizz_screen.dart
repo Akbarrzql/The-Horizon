@@ -64,13 +64,14 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     height: 5.0,
                   ),
                   Container(
+                    margin: EdgeInsets.only(bottom: 20.0),
                     child: SizedBox(
-                      height: 200.0,
+                      // height: 200.0,
                       child: Text(
                         "${questions[index].question}",
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 22.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -79,7 +80,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                   for (int i = 0; i < questions[index].answers!.length; i++)
                     Container(
                       width: double.infinity,
-                      height: 70.0,
+                      height: 60.0,
                       margin: EdgeInsets.only(
                           bottom: 10.0, left: 12.0, right: 12.0),
                       child: RawMaterialButton(
@@ -116,13 +117,10 @@ class _QuizzScreenState extends State<QuizzScreen> {
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                             )),
                       ),
                     ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
                   GestureDetector(
                     onTap:(){
                       //if answer not selected then show alert
@@ -169,7 +167,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 20.0),
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
                         border: Border.all(color: answered ? Color(0xff5FD068) : Colors.grey),
                         color: answered ? Color(0xff5FD068) : Colors.grey,
@@ -183,7 +181,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                             btnText,
                             style: TextStyle(
                               color: answered ? Colors.white : Colors.white54,
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                             ),
                           ),
                           Icon(
