@@ -123,6 +123,7 @@ class _SignUpState extends State<SignUp> {
                             height: 20,
                           ),
                           TextFormField(
+                            obscureText: _isHidden,
                             controller: password,
                             validator: (val) => val!.isEmpty
                                 ? 'Mohon Masukkan Password Anda!'
@@ -140,15 +141,12 @@ class _SignUpState extends State<SignUp> {
                                         BorderSide(color: Colors.white)),
                                 hintText: "Enter Your Password",
                                 suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isHidden ? Icons.visibility : Icons.visibility_off,
-                                    color: Colors.white,
-                                  ),
                                   onPressed: (){
                                     setState(() {
                                       _isHidden = !_isHidden;
                                     });
                                   },
+                                  icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.white,) : Icon(Icons.visibility, color: Colors.white,),
                                 ),
                                 hintStyle: TextStyle(
                                     color: Colors.grey,

@@ -14,9 +14,9 @@ int? initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await PushNotificationConfig().requestPermission();
-  await PushNotificationConfig().androidNotificationChanel();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await PushNotificationConfig().requestPermission();
+  // await PushNotificationConfig().androidNotificationChanel();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = prefs.getInt('initScreen');
@@ -30,9 +30,9 @@ Future<void> main() async {
 
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
