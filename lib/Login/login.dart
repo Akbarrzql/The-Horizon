@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thehorizonapps/Login/SignUp.dart';
@@ -74,7 +75,7 @@ class _LoginState extends State<Login> {
                               hintText: "Enter Your Password",
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                    _isHidden ? Icons.visibility : Icons.visibility_off,
+                                  _isHidden ? Icons.visibility : Icons.visibility_off,
                                   color: Colors.white,
                                 ),
                                 onPressed: (){
@@ -100,6 +101,24 @@ class _LoginState extends State<Login> {
                           child: ElevatedButton(onPressed: (){
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
+                              showCupertinoDialog(context: context, builder: (context) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(child: CircularProgressIndicator(
+                                        color: Color(0xff5FD068),
+                                      )),
+                                    ),
+                                  ],
+                                );
+                              });
                               AuthenticationHelper()
                                   .signIn(email: email.text, password: password.text)
                                   .then((ok) {
@@ -109,6 +128,7 @@ class _LoginState extends State<Login> {
                                       MaterialPageRoute(
                                           builder: (context) => MainNav()));
                                 } else {
+                                  Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                       ok,
@@ -152,6 +172,24 @@ class _LoginState extends State<Login> {
                           width: double.infinity,
                           height: 46,
                           child: ElevatedButton.icon(onPressed: (){
+                            showCupertinoDialog(context: context, builder: (context) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(child: CircularProgressIndicator(
+                                      color: Color(0xff5FD068),
+                                    )),
+                                  ),
+                                ],
+                              );
+                            });
                             AuthenticationHelper().signInWithGoogle().then((value) {
                               if (value != null) {
                                 Navigator.pushReplacement(
@@ -159,6 +197,7 @@ class _LoginState extends State<Login> {
                                     MaterialPageRoute(
                                         builder: (context) => MainNav()));
                               } else {
+                                Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
                                     'Login Gagal',
@@ -171,7 +210,7 @@ class _LoginState extends State<Login> {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-                              icon: SvgPicture.asset("assets/google.svg", height: 20,),
+                              icon: Image.asset("assets/flat-color-icons_google.png", height: 20,),
                               label: Text("Log in with Google", style: TextStyle(color: Color(0xff042330),fontWeight: FontWeight.bold, fontSize: 15),)),
                         ),
                         SizedBox(height: 50,),

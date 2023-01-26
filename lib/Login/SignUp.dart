@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
@@ -14,11 +15,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  bool _isHidden = true;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController username = TextEditingController();
-
+  bool _isHiddenregister = true;
 
   @override
   Widget build(BuildContext context) {
@@ -122,43 +122,44 @@ class _SignUpState extends State<SignUp> {
                           SizedBox(
                             height: 20,
                           ),
-                          TextFormField(
-                            controller: password,
-                            validator: (val) => val!.isEmpty
-                                ? 'Mohon Masukkan Password Anda!'
-                                : null,
-                            style: TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white)),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white)),
-                                border: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white)),
-                                hintText: "Enter Your Password",
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isHidden ? Icons.visibility : Icons.visibility_off,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: (){
-                                    setState(() {
-                                      _isHidden = !_isHidden;
-                                    });
-                                  },
-                                ),
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13),
-                                prefixIcon: Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.white,
-                                )),
-                          ),
+                      TextFormField(
+                        controller: password,
+                        obscureText: _isHiddenregister,
+                        validator: (val) => val!.isEmpty
+                            ? 'Mohon Masukkan Password Anda!'
+                            : null,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.white)),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.white)),
+                            border: UnderlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.white)),
+                            hintText: "Enter Your Password",
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isHiddenregister ? Icons.visibility : Icons.visibility_off,
+                                color: Colors.white,
+                              ),
+                              onPressed: (){
+                                setState(() {
+                                  _isHiddenregister = !_isHiddenregister;
+                                });
+                              },
+                            ),
+                            hintStyle: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13),
+                            prefixIcon: Icon(
+                              Icons.lock_outline,
+                              color: Colors.white,
+                            )),
+                      ),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 20),
                             width: double.infinity,
@@ -167,7 +168,24 @@ class _SignUpState extends State<SignUp> {
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
-
+                                    showCupertinoDialog(context: context, builder: (context) {
+                                      return Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Center(child: CircularProgressIndicator(
+                                              color: Color(0xff5FD068),
+                                            )),
+                                      ),
+                                        ],
+                                      );
+                                    });
                                     AuthenticationHelper()
                                         .signUp(
                                             email: email.text,
@@ -180,6 +198,7 @@ class _SignUpState extends State<SignUp> {
                                                 builder: (context) =>
                                                     MainNav()));
                                       } else {
+                                        Navigator.pop(context);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                           content: Text(
@@ -239,6 +258,24 @@ class _SignUpState extends State<SignUp> {
                             height: 46,
                             child: ElevatedButton.icon(
                               onPressed: () {
+                                showCupertinoDialog(context: context, builder: (context) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Center(child: CircularProgressIndicator(
+                                          color: Color(0xff5FD068),
+                                        )),
+                                      ),
+                                    ],
+                                  );
+                                });
                                 AuthenticationHelper()
                                     .signInWithGoogle()
                                     .then((result) {
@@ -248,6 +285,7 @@ class _SignUpState extends State<SignUp> {
                                         MaterialPageRoute(
                                             builder: (context) => MainNav()));
                                   } else {
+                                    Navigator.pop(context);
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       content: Text(
