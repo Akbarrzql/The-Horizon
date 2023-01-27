@@ -17,7 +17,6 @@ class EditArticle extends StatefulWidget {
 class _EditArticleState extends State<EditArticle> {
 
   ArticeControler articeControler = Get.put(ArticeControler());
-  var listAllArticle = [].obs;
 
   @override
   Widget build(BuildContext context) {
@@ -47,52 +46,56 @@ class _EditArticleState extends State<EditArticle> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            TextField(
-              controller: articeControler.titleController,
-              autocorrect: false,
-              textInputAction: TextInputAction.next,
-              style: const TextStyle(color: Colors.white),
-              textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                labelText: 'Tittle',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10,),
-            TextField(
-              controller: articeControler.subtittleController,
-              textInputAction: TextInputAction.next,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'Subtittle',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+            Container(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TextFormField(
+                controller: articeControler.titleController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 10,),
-            TextField(
-              controller: articeControler.descController,
-              textInputAction: TextInputAction.done,
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                labelText: 'description',
-                labelStyle: TextStyle(color: Colors.white),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+            Container(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TextFormField(
+                controller: articeControler.subtittleController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Subtitle',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            const SizedBox(height: 10,),
+            Container(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TextFormField(
+                controller: articeControler.descController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: const TextStyle(color: Colors.white),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -108,7 +111,13 @@ class _EditArticleState extends State<EditArticle> {
                     articeControler.titleController.text,
                     articeControler.subtittleController.text,
                     articeControler.descController.text);
-                Navigator.pop(context);
+                articeControler.titleController.clear();
+                articeControler.subtittleController.clear();
+                articeControler.descController.clear();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const view_aritcle()));
               },
               child: const Text('Edit Article'),
             ),
