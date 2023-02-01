@@ -46,6 +46,9 @@ class _DetailArticleState extends State<DetailArticle> {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => EditArticle(
                 arguments: widget.id,
+                tittle: widget.title,
+                subtittle: widget.subtittle,
+                desc: widget.desc,
               )));
             },
             icon: const Icon(Icons.edit),

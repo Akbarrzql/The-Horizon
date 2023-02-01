@@ -7,8 +7,11 @@ import 'package:thehorizonapps/Main/article_users/view_article_page.dart';
 import 'package:thehorizonapps/controller/article_controller.dart';
 
 class EditArticle extends StatefulWidget {
-  const EditArticle({Key? key, required this.arguments}) : super(key: key);
+  const EditArticle({Key? key, required this.arguments, required this.desc, required this.tittle, required this.subtittle}) : super(key: key);
   final String arguments;
+  final String tittle;
+  final String subtittle;
+  final String desc;
 
   @override
   State<EditArticle> createState() => _EditArticleState();
@@ -17,6 +20,15 @@ class EditArticle extends StatefulWidget {
 class _EditArticleState extends State<EditArticle> {
 
   ArticeControler articeControler = Get.put(ArticeControler());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    articeControler.titleController.text = widget.tittle;
+    articeControler.subtittleController.text = widget.subtittle;
+    articeControler.descController.text = widget.desc;
+  }
 
   @override
   Widget build(BuildContext context) {
