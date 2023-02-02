@@ -127,12 +127,12 @@ class _HomeState extends State<Home> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Image.asset(
-            //   'assets/newlogosmall.png',
-            //   fit: BoxFit.contain,
-            //   height: 50,
-            //   width: 50,
-            // ),
+            widgets.Image.asset(
+              'assets/newlogosmall.png',
+              fit: BoxFit.contain,
+              height: 50,
+              width: 50,
+            ),
             Container(
                 padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
           ],

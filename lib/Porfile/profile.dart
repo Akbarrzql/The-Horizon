@@ -91,7 +91,7 @@ class _ProfileState extends State<Profile> {
                         ),
                         Spacer(),
                         Text("Akbar Rizqullah", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                        Text("akbarrizqullah@gmail.com", style: TextStyle(color: Color(0xff959595), fontSize: 12, fontWeight: FontWeight.w500),),
+                        Text("${FirebaseAuth.instance.currentUser!.email}", style: TextStyle(color: Color(0xff959595), fontSize: 12, fontWeight: FontWeight.w500),),
                         SizedBox(height: 50,),
                         Spacer(),
                       ],
