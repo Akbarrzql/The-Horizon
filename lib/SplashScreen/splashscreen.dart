@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:thehorizonapps/Login/login.dart';
 import 'package:thehorizonapps/Main/bottomnav.dart';
@@ -16,12 +18,23 @@ class splashscreen extends StatefulWidget {
 class _splashscreenState extends State<splashscreen> {
 
   startSplashScreen() async {
-    var duration = const Duration(seconds: 5);
-    return Timer(duration, () {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const Login()),
-              (Route<dynamic> route) => false);
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      } else {
+        print('User is signed in!');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MainNav()));
+      }
     });
+    // var duration = const Duration(seconds: 5);
+    // return Timer(duration, () {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (context) => const Login()),
+    //           (Route<dynamic> route) => false);
+    // });
   }
 
   @override
