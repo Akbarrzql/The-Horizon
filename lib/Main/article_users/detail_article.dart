@@ -7,10 +7,11 @@ import 'package:thehorizonapps/Main/article_users/edit_article.dart';
 import 'package:thehorizonapps/controller/article_controller.dart';
 
 class DetailArticle extends StatefulWidget {
-  const DetailArticle({Key? key, required this.title, required this.subtittle, required this.desc, required this.id}) : super(key: key);
+  const DetailArticle({Key? key, required this.title, required this.subtittle, required this.desc, required this.image, required this.id}) : super(key: key);
   final String title;
   final String subtittle;
   final String desc;
+  final String image;
   final String id;
 
   @override
@@ -49,6 +50,7 @@ class _DetailArticleState extends State<DetailArticle> {
                 tittle: widget.title,
                 subtittle: widget.subtittle,
                 desc: widget.desc,
+                image: widget.image,
               )));
             },
             icon: const Icon(Icons.edit),
@@ -62,6 +64,10 @@ class _DetailArticleState extends State<DetailArticle> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+            FadeInImage(
+              placeholder: const AssetImage('assets/logo.png'),
+              image: NetworkImage(widget.image),
+            ),
             Text(widget.title, style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white, fontSize: 30),),
             const SizedBox(height: 10,),
             Text(widget.subtittle, style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white, fontSize: 20),),

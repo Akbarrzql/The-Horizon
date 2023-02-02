@@ -55,6 +55,7 @@ class _view_aritcleState extends State<view_aritcle> {
                     title: (listAllArticle[index].data() as Map<String, dynamic>)['tittle'],
                     subtittle: (listAllArticle[index].data() as Map<String, dynamic>)['subtittle'],
                     desc: (listAllArticle[index].data() as Map<String, dynamic>)['desc'],
+                    image: (listAllArticle[index].data() as Map<String, dynamic>)['image'],
                   )));
                 },
                 child: Card(
