@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/Main/article_users/edit_article.dart';
 import 'package:thehorizonapps/controller/article_controller.dart';
+import 'package:thehorizonapps/resposive/resposive.dart';
 
 class DetailArticle extends StatefulWidget {
   const DetailArticle({Key? key, required this.title, required this.subtittle, required this.desc, required this.image, required this.id}) : super(key: key);
@@ -24,6 +25,8 @@ class _DetailArticleState extends State<DetailArticle> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xff042330),
       appBar: AppBar(
@@ -60,22 +63,68 @@ class _DetailArticleState extends State<DetailArticle> {
         //no back button
         automaticallyImplyLeading: false,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            FadeInImage(
-              placeholder: const AssetImage('assets/logo.png'),
-              image: NetworkImage(widget.image),
-            ),
-            Text(widget.title, style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white, fontSize: 30),),
-            const SizedBox(height: 10,),
-            Text(widget.subtittle, style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white, fontSize: 20),),
-            const SizedBox(height: 10,),
-            Text(widget.desc, style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white, fontSize: 15),),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+            width: MediaQuery.of(context).size.width,
+            color: Color(0xff042330),
+            child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          child: Container(
+                            //width if smartphone vertical else horizontal
+                            width: isLandScape(context) ? width : width,
+                            height: MediaQuery.of(context).orientation == Orientation.portrait ? 170 : 350,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5), // Image border
+                              child: SizedBox.fromSize(
+                                size: Size.fromRadius(30), // Image radius
+                                child: Image.network(widget.image, fit: BoxFit.cover,),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                          child: Text(widget.title, style: GoogleFonts.poppins(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),),
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          margin: const EdgeInsets.only(left: 10, right: 10,top: 5),
+                          child: Text(widget.subtittle, style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 16, fontWeight: FontWeight.w500),),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.white,
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10, right: 10,top: 10),
+                    child: Text(widget.desc, style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500, height: 2),),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10, right: 10,bottom: 50, top: 10),
+                    child: Text('Terima kasih telah membaca sampai habis', style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 14, fontWeight: FontWeight.normal),),
+                  ),
+                ]
+            )
         ),
-      ),
+      )
     );
   }
 }

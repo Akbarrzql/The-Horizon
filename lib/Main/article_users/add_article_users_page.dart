@@ -39,6 +39,8 @@ class _add_article_usersState extends State<add_article_users> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xff042330),
       appBar: AppBar(
@@ -62,7 +64,7 @@ class _add_article_usersState extends State<add_article_users> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: width,
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
@@ -126,12 +128,13 @@ class _add_article_usersState extends State<add_article_users> {
                     const SizedBox(height: 10,),
                     TextField(
                       controller: articeControler.descController,
-                      textInputAction: TextInputAction.done,
-                      minLines: 5,
-                      maxLines: 15,
+                      textInputAction: TextInputAction.newline,
+                      minLines: 10,
+                      maxLines: 10000,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
-                        labelText: 'description',
+                        hintText: 'Description',
+                        hintStyle: TextStyle(color: Colors.white),
                         labelStyle: TextStyle(color: Colors.white),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),

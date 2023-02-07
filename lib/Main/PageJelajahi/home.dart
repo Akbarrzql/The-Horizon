@@ -25,7 +25,7 @@ import 'package:thehorizonapps/Model/HistoryModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 import 'package:thehorizonapps/Model/RandomModel.dart';
-import 'package:thehorizonapps/controller/Controller.dart';
+import 'package:thehorizonapps/controller/controller_api.dart';
 
 
 class Home extends StatefulWidget {
