@@ -122,6 +122,7 @@ class _SignUpState extends State<SignUp> {
                           SizedBox(
                             height: 20,
                           ),
+<<<<<<< HEAD
                       TextFormField(
                         controller: password,
                         obscureText: _isHiddenregister,
@@ -160,6 +161,43 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.white,
                             )),
                       ),
+=======
+                          TextFormField(
+                            obscureText: _isHidden,
+                            controller: password,
+                            validator: (val) => val!.isEmpty
+                                ? 'Mohon Masukkan Password Anda!'
+                                : null,
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                border: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                hintText: "Enter Your Password",
+                                suffixIcon: IconButton(
+                                  onPressed: (){
+                                    setState(() {
+                                      _isHidden = !_isHidden;
+                                    });
+                                  },
+                                  icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.white,) : Icon(Icons.visibility, color: Colors.white,),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 13),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.white,
+                                )),
+                          ),
+>>>>>>> feat/crud-article
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 20),
                             width: double.infinity,

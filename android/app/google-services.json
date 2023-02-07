@@ -20,6 +20,14 @@
             "package_name": "com.example.thehorizonapps",
             "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
           }
+        },
+        {
+          "client_id": "1036458352165-rh4e78lqq8rau35ri0bd5dfgvhtojp95.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thehorizonapps",
+            "certificate_hash": "20bd87f97629dcbc26c1815e8acaa80502ecb0ee"
+          }
         }
       ],
       "api_key": [

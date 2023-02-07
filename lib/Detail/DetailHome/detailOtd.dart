@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:thehorizonapps/Detail/DetailArticle/DetailOtd.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 
-import 'package:thehorizonapps/controller/Controller.dart';
+import 'package:thehorizonapps/controller/controller_api.dart';
 
 class DetailOtd extends StatefulWidget {
   const DetailOtd({Key? key}) : super(key: key);

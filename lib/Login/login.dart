@@ -73,15 +73,12 @@ class _LoginState extends State<Login> {
                               border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
                               hintText: "Enter Your Password",
                               suffixIcon: IconButton(
-                                icon: Icon(
-                                  _isHidden ? Icons.visibility : Icons.visibility_off,
-                                  color: Colors.white,
-                                ),
                                 onPressed: (){
                                   setState(() {
                                     _isHidden = !_isHidden;
                                   });
                                 },
+                                icon: _isHidden ? Icon(Icons.visibility_off, color: Colors.white,) : Icon(Icons.visibility, color: Colors.white,),
                               ),
                               hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.w700, fontSize: 13),
                               prefixIcon: Icon(Icons.lock_outline, color: Colors.white,)
