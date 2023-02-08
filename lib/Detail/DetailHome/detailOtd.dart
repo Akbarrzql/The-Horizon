@@ -26,6 +26,13 @@ class _DetailOtdState extends State<DetailOtd> {
   String day = DateTime.now().day.toString().padLeft(2, '0');
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dataController.getApi(mount, day);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff042330),
@@ -63,6 +70,10 @@ class _DetailOtdState extends State<DetailOtd> {
                         },
                       ).then((value) {
                         dataController.getApi(value!.month.toString(), value.day.toString().padLeft(2, '0'));
+                        setState(() {
+                          mount = value.month.toString();
+                          day = value.day.toString().padLeft(2, '0');
+                        });
                       });
                     },
                     child: Row(

@@ -33,7 +33,7 @@ class _splashscreenState extends State<splashscreen> {
     // var duration = const Duration(seconds: 5);
     // return Timer(duration, () {
     //   Navigator.of(context).pushAndRemoveUntil(
-    //       MaterialPageRoute(builder: (context) => const Login()),
+    //       MaterialPageRoute(builder: (context) => const MainNav()),
     //           (Route<dynamic> route) => false);
     // });
   }

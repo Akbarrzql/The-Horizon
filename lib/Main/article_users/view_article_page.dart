@@ -44,6 +44,16 @@ class _view_aritcleState extends State<view_aritcle> {
                 padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
           ],
         ),
+        actions: [
+          //search button
+          IconButton(
+            onPressed: () {
+              // showSearch(context: context, delegate: Search());
+            },
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+          ),
+        ],
         //no back button
         automaticallyImplyLeading: false,
       ),

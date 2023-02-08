@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class DataController extends GetxController{
   OnThisDayModel? onThisDayModel;
-  var isDataLoading = false.obs;
+  var isDataLoading = true.obs;
   //get mount
   String mount = DateTime.now().month.toString();
   //get day

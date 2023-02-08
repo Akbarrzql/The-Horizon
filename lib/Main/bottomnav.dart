@@ -4,6 +4,7 @@ import 'package:thehorizonapps/Main/Kuis/screens/main_quiz.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveFeed.dart';
 import 'package:thehorizonapps/Main/PageSave/PageSave.dart';
+import 'package:thehorizonapps/Main/article_users/view_article_page.dart';
 import 'package:thehorizonapps/Porfile/profile.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 
@@ -28,6 +29,7 @@ class _MainNavState extends State<MainNav> {
     Home(),
     PageSaveKategori(),
     MainMenu(),
+    view_aritcle(),
     Profile(),
   ];
 
@@ -67,6 +69,12 @@ class _MainNavState extends State<MainNav> {
             icon: Icon(Icons.quiz_outlined),
             label: 'Kuis',
             activeIcon: Icon(Icons.quiz, color: Color(0xff5FD068),),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xff042330),
+            icon: Icon(Icons.folder_copy_outlined),
+            label: 'Artikel',
+            activeIcon: Icon(Icons.folder_copy, color: Color(0xff5FD068),),
           ),
           BottomNavigationBarItem(
             backgroundColor: Color(0xff042330),
