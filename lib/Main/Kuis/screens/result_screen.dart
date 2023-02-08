@@ -17,6 +17,7 @@ class _ResultScreenState extends State<ResultScreen> {
     return Scaffold(
         backgroundColor: Color(0xff042330),
         body: Center(
+            child: SingleChildScrollView(
           child: Container(
               child: Stack(
             children: [
@@ -29,12 +30,12 @@ class _ResultScreenState extends State<ResultScreen> {
                       elevation: 0,
                       color: Color(0xff042330),
                       shape: RoundedRectangleBorder(
-                        // borderRadius: BorderRadius.circular(50.0),
-                      ),
+                          // borderRadius: BorderRadius.circular(50.0),
+                          ),
                       child: Container(
                           // margin: EdgeInsets.only(top: 80.0),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
@@ -79,7 +80,6 @@ class _ResultScreenState extends State<ResultScreen> {
                               ),
                             ),
                           ),
-
                           Container(
                             margin: EdgeInsets.only(top: 20),
                             child: Row(
@@ -140,6 +140,6 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
             ],
           )),
-        ));
+        )));
   }
 }
