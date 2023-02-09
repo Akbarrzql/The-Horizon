@@ -21,10 +21,9 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = prefs.getInt('initScreen');
   await prefs.setInt('initScreen', 1);
-    runApp(MyApp());
+  runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-
 }
 
 // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -53,9 +52,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute : initScreen == null || initScreen == 0
-          ? 'home'
-          : 'splashscreen',
+      initialRoute:
+          initScreen == null || initScreen == 0 ? 'home' : 'splashscreen',
       routes: {
         'splashscreen': (context) => splashscreen(),
         'home': (context) => splashscreentwo(),

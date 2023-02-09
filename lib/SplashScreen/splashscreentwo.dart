@@ -10,7 +10,6 @@ class splashscreentwo extends StatefulWidget {
 }
 
 class _splashscreentwoState extends State<splashscreentwo> {
-
   startSplashScreentwo() async {
     var duration = const Duration(seconds: 5);
     return Timer(duration, () {
@@ -37,8 +36,8 @@ class _splashscreentwoState extends State<splashscreentwo> {
           Center(
             child: Image.asset(
               "assets/newlogoupdate.png",
-              width: 400.0,
-              height: 400.0,
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.width * 0.5,
               fit: BoxFit.contain,
             ),
           ),
