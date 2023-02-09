@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thehorizonapps/Login/login.dart';
-import 'package:thehorizonapps/Porfile/editProfile.dart';
+import 'package:thehorizonapps/profile/editProfile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -118,7 +118,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                  width: MediaQuery.of(context).size.width / 1.8,
+                                  width: MediaQuery.of(context).size.width / 1.9,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
