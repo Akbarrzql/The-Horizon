@@ -19,23 +19,23 @@ class splashscreen extends StatefulWidget {
 class _splashscreenState extends State<splashscreen> {
 
   startSplashScreen() async {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Login()));
-      } else {
-        print('User is signed in!');
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainNav()));
-      }
-    });
-    // var duration = const Duration(seconds: 5);
-    // return Timer(duration, () {
-    //   Navigator.of(context).pushAndRemoveUntil(
-    //       MaterialPageRoute(builder: (context) => const MainNav()),
-    //           (Route<dynamic> route) => false);
+    // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    //   if (user == null) {
+    //     print('User is currently signed out!');
+    //     Navigator.pushReplacement(
+    //         context, MaterialPageRoute(builder: (context) => Login()));
+    //   } else {
+    //     print('User is signed in!');
+    //     Navigator.pushReplacement(
+    //         context, MaterialPageRoute(builder: (context) => MainNav()));
+    //   }
     // });
+    var duration = const Duration(seconds: 5);
+    return Timer(duration, () {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MainNav()),
+              (Route<dynamic> route) => false);
+    });
   }
 
   @override
