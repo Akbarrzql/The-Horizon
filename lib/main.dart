@@ -14,25 +14,25 @@ int? initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  await PushNotificationConfig().requestPermission();
-  await PushNotificationConfig().androidNotificationChanel();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await PushNotificationConfig().requestPermission();
+  // await PushNotificationConfig().androidNotificationChanel();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   initScreen = prefs.getInt('initScreen');
   await prefs.setInt('initScreen', 1);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(MyApp());
-  });
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  //     .then((_) {
+
+  // });
+  runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -56,9 +56,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute : initScreen == null || initScreen == 0
-          ? 'home'
-          : 'splashscreen',
+      initialRoute:
+          initScreen == null || initScreen == 0 ? 'home' : 'splashscreen',
       routes: {
         'splashscreen': (context) => splashscreen(),
         'home': (context) => splashscreentwo(),
