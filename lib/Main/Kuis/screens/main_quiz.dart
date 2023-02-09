@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/Main/Kuis/screens/quizz_screen.dart';
 import 'package:thehorizonapps/Main//Kuis/ui/shared/color.dart';
 

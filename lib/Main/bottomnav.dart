@@ -4,6 +4,7 @@ import 'package:thehorizonapps/Main/Kuis/screens/main_quiz.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveFeed.dart';
 import 'package:thehorizonapps/Main/PageSave/PageSave.dart';
+import 'package:thehorizonapps/Porfile/profile.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 
 class MainNav extends StatefulWidget {
@@ -27,31 +28,13 @@ class _MainNavState extends State<MainNav> {
     Home(),
     PageSaveKategori(),
     MainMenu(),
+    Profile(),
   ];
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff042330),
-        elevation: 0.5,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              'assets/newlogosmall.png',
-              fit: BoxFit.contain,
-              height: 50,
-              width: 50,
-            ),
-            Container(
-                padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
-          ],
-        ),
-        //no back button
-        automaticallyImplyLeading: false,
-      ),
       body:(
           IndexedStack(
             index: _selectedIndex,
@@ -59,6 +42,7 @@ class _MainNavState extends State<MainNav> {
           )
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         backgroundColor: Color(0xff042330),
         elevation: 2,
         showUnselectedLabels: true,
@@ -68,18 +52,27 @@ class _MainNavState extends State<MainNav> {
         selectedItemColor: Color(0xff5FD068),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            backgroundColor: Color(0xff042330),
             icon: Icon(Icons.home_filled),
             label: 'Jelajahi',
           ),
           BottomNavigationBarItem(
+            backgroundColor: Color(0xff042330),
             icon: Icon(Icons.bookmark_border_outlined),
             label: 'Simpan',
             activeIcon: Icon(Icons.bookmark, color: Color(0xff5FD068),),
           ),
           BottomNavigationBarItem(
+            backgroundColor: Color(0xff042330),
             icon: Icon(Icons.quiz_outlined),
             label: 'Kuis',
             activeIcon: Icon(Icons.quiz, color: Color(0xff5FD068),),
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Color(0xff042330),
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Profile',
+            activeIcon: Icon(Icons.account_circle, color: Color(0xff5FD068),),
           ),
         ],
         currentIndex: _selectedIndex, //New
