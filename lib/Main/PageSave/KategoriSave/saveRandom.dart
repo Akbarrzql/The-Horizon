@@ -212,7 +212,7 @@ class _SaveRandomState extends State<SaveRandom> {
                                                       ),
                                                       //width and height of alert dialog
                                                       title: Text("Hapus!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Colors.red)), textAlign: TextAlign.center,),
-                                                      content: Text("Apakah anda yakin ingin menhapus artikel ini?", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),textAlign: TextAlign.center,),
+                                                      content: Text("Apakah anda yakin ingin menghapus artikel ini?", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),textAlign: TextAlign.center,),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {
