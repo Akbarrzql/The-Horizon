@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' as widgets;
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,12 +20,13 @@ import 'package:thehorizonapps/Detail/DetailEditionHistory/HistoryEdition.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailFeed.dart';
 import 'package:thehorizonapps/Detail/DetailHome/DetailRandom.dart';
 import 'package:thehorizonapps/Detail/DetailHome/detailOtd.dart';
-import 'package:thehorizonapps/Detail/DetailImage/DetailImage.dart';
 import 'package:thehorizonapps/Model/FeedModel.dart';
 import 'package:thehorizonapps/Model/HistoryModel.dart';
 import 'package:thehorizonapps/Model/OnThisDayModel.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 import 'package:thehorizonapps/Model/RandomModel.dart';
+import 'package:thehorizonapps/controller/controller_api.dart';
+import 'package:thehorizonapps/resposive/resposive.dart';
 
 
 class Home extends StatefulWidget {
@@ -37,7 +41,7 @@ class _HomeState extends State<Home> {
   //Model and variable
   FeedModel? feedModel;
   OnThisDayModel? onThisDayModel;
-  bool loading = true;
+  var loading = true.obs;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
   String year = DateTime.now().year.toString();
@@ -45,10 +49,11 @@ class _HomeState extends State<Home> {
   String day = DateTime.now().day.toString().padLeft(2, '0');
 
 
+
   //get data
   getFeed() async {
     setState(() {
-      loading = false;
+      loading(true);
     });
 
     final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
@@ -56,15 +61,14 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/08'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
-    print("Response body: ${feedModel?.mostread!.articles![0].normalizedtitle}");
 
 
 
     setState(() {
-      loading = true;
+      loading(false);
     });
   }
 
@@ -118,6 +122,25 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xff042330),
+        elevation: 0.5,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            widgets.Image.asset(
+              'assets/newlogosmall.png',
+              fit: BoxFit.contain,
+              height: 50,
+              width: 50,
+            ),
+            Container(
+                padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
+          ],
+        ),
+        //no back button
+        automaticallyImplyLeading: false,
+      ),
       backgroundColor: Color(0xff042330),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -146,11 +169,14 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Icon(
+                       const Icon(
                           Icons.search,
                           color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 10,
                         ),
                         Text(
                           'Cari artikel, Sejarah atau hal lainnya',
@@ -182,130 +208,137 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top:20, left: 10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 5),
-                              child:  Text("Hari ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.normal),),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 5),
-                              child:  Text("Sejarah Hari Ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                            ),
-                          ],
-                        )
-                    )
-                  ],
-                ),
-              ),
-              Container(
+              //responsive condition
+              MediaQuery.of(context).size.width < 400 ? Container(
                 child: Column(
                   children: [
                     Container(
+                      margin: const EdgeInsets.only(top:20, left: 10),
                       child: Row(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 5, top: 10),
-                              width: 40,
-                              height: 40,
-                              child: Lottie.asset('assets/circle.json', width: 300, height: 300, fit: BoxFit.cover,),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10, top: 10),
+                        children: <Widget>[
+                          Container(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("${onThisDayModel?.events![0].year ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    child:  Text("Hari ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.normal),),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    child:  Text("Sejarah Hari Ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                                  ),
                                 ],
-                              ),
-                            )
-                          ]
+                              )
+                          )
+                        ],
                       ),
                     ),
                     Container(
-                      width: 350,
-                      margin: EdgeInsets.only(left: 17, top: 5),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
                         children: [
-                          IntrinsicHeight(
+                          Container(
                             child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(left: 5, top: 10),
+                                    width: 40,
+                                    height: 40,
+                                    child: Lottie.asset('assets/circle.json', width: 300, height: 300, fit: BoxFit.cover,),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10, top: 10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("${onThisDayModel?.events![0].year ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
+                                      ],
+                                    ),
+                                  )
+                                ]
+                            ),
+                          ),
+                          Container(
+                            width: 350,
+                            margin: EdgeInsets.only(left: 17, top: 5),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                VerticalDivider(
-                                  color: Color(0xffCBCBCB),
-                                  thickness: 1,
-                                ),
-                                Container(
-                                  width: 320,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
+                                IntrinsicHeight(
+                                  child: Row(
+                                    children: [
+                                      VerticalDivider(
+                                        color: Color(0xffCBCBCB),
+                                        thickness: 1,
+                                      ),
                                       Container(
-                                        margin: const EdgeInsets.only(left: 10),
+                                        width: 320,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("${onThisDayModel?.events![0].text ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
-                                                  pages: onThisDayModel!.events![0].pages![0],
-                                                )));
-                                              },
-                                              child: Card(
-                                                color: Color(0xff042330),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                  side: BorderSide(color: Colors.white, width: 0.5),
-                                                ),
-                                                child: Container(
-                                                  width: 330,
-                                                  child: Column(
-                                                    children: <Widget>[
-                                                      Container(
-                                                        margin: const EdgeInsets.only(bottom: 10),
-                                                        //image radius
-                                                        child: ClipRRect(
-                                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                                                            child: widgets.Image.network("${onThisDayModel?.events![0].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", width: 330, height: 230, fit: BoxFit.cover,)
-                                                        ),
+                                          children: <Widget>[
+                                            Container(
+                                              margin: const EdgeInsets.only(left: 10),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text("${onThisDayModel?.events![0].text ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
+                                                        pages: onThisDayModel!.events![0].pages![0],
+                                                      )));
+                                                    },
+                                                    child: Card(
+                                                      color: Color(0xff042330),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(10.0),
+                                                        side: BorderSide(color: Colors.white, width: 0.5),
                                                       ),
-                                                      Container(
-                                                        color: Color(0xff042330),
+                                                      child: Container(
+                                                        width: 330,
                                                         child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: <Widget>[
                                                             Container(
-                                                                margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                                                                width: 300,
-                                                                child: Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  children: [
-                                                                    Text("${onThisDayModel?.events![0].pages![0].normalizedtitle ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
-                                                                    Divider(
-                                                                      color: Colors.white,
-                                                                      height: 20,
-                                                                      thickness: 1,
-                                                                      indent: 0,
-                                                                      endIndent: 200,
-                                                                    ),
-                                                                    Text("${onThisDayModel?.events![0].pages![0].description ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                                  ],
-                                                                )
+                                                              margin: const EdgeInsets.only(bottom: 10),
+                                                              //image radius
+                                                              child: ClipRRect(
+                                                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                                                  child: widgets.Image.network("${onThisDayModel?.events![0].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", width: 330, height: 230, fit: BoxFit.cover,)
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              color: Color(0xff042330),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                                                      width: 300,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${onThisDayModel?.events![0].pages![0].normalizedtitle ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
+                                                                          Divider(
+                                                                            color: Colors.white,
+                                                                            height: 20,
+                                                                            thickness: 1,
+                                                                            indent: 0,
+                                                                            endIndent: 200,
+                                                                          ),
+                                                                          Text("${onThisDayModel?.events![0].pages![0].description ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
                                             ),
                                           ],
@@ -320,381 +353,919 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOtd()));
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 15, right: 15),
-                          child: Row(
-                              children: <Widget>[
-                                Text("Lebih banyak sejarah pada hari ini", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 16), fontWeight: FontWeight.w600),),
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,),
-                                )
-                              ]
+                    Container(
+                      child: Row(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOtd()));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 15, right: 15),
+                                child: Row(
+                                    children: <Widget>[
+                                      Text("Lebih banyak sejarah pada hari ini", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 16), fontWeight: FontWeight.w600),),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 5),
+                                        child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,),
+                                      )
+                                    ]
+                                ),
+                                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              )
                           ),
-                          padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        ],
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 50, left: 15),
+                        child: Column(
+                          children: [
+                            Row(
+                                children: <Widget>[
+                                  Text("Bacaan Teratas", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                                ]
+                            ),
+                          ],
                         )
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                  margin: const EdgeInsets.only(top: 50, left: 15),
-                  child: Column(
-                    children: [
-                      Row(
-                          children: <Widget>[
-                            Text("Bacaan Teratas", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                          ]
+                    Container(
+                      child: SizedBox(
+                        width: 350,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
+                          ),
+                          color: Color(0xff042330),
+                          child: Column(
+                              children: <Widget>[
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                      articles: feedModel!.mostread!.articles![0],
+                                    )));
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                //text circle avatar
+                                                child: widgets.Image.asset("assets/number-1.png", width: 24, height: 24,),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: 200,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("${feedModel?.mostread!.articles![0].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                                            Text("${feedModel?.mostread!.articles![0].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                          ],
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(30), // Image radius
+                                                      child: widgets.Image.network("${feedModel?.mostread!.articles![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Color(0xffCBCBCB),
+                                          thickness: 0.5,
+                                          indent: 0,
+                                          endIndent: 0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                      articles: feedModel!.mostread!.articles![1],
+                                    )));
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                //text circle avatar
+                                                child: widgets.Image.asset(
+                                                  'assets/number-2.png',
+                                                  height: 32,
+                                                  width: 32,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: 200,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("${feedModel?.mostread!.articles![1].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                            Text("${feedModel?.mostread!.articles![1].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                          ],
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(30), // Image radius
+                                                      child: widgets.Image.network('${feedModel?.mostread!.articles![1].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Color(0xffCBCBCB),
+                                          thickness: 1,
+                                          indent: 0,
+                                          endIndent: 0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                      articles: feedModel!.mostread!.articles![2],
+                                    )));
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                //text circle avatar
+                                                child: widgets.Image.asset(
+                                                  'assets/number-3.png',
+                                                  height: 32,
+                                                  width: 32,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: 200,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("${feedModel?.mostread!.articles![2].normalizedtitle ?? "Kesalahan pada server" }", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                            Text("${feedModel?.mostread!.articles![2].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                          ],
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(30), // Image radius
+                                                      child: widgets.Image.network("${feedModel?.mostread!.articles![2].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Color(0xffCBCBCB),
+                                          thickness: 1,
+                                          indent: 0,
+                                          endIndent: 0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                      articles: feedModel!.mostread!.articles![3],
+                                    )));
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                //text circle avatar
+                                                child: widgets.Image.asset(
+                                                  'assets/number-4.png',
+                                                  height: 32,
+                                                  width: 32,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: 200,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("${feedModel?.mostread!.articles![3].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                            Text("${feedModel?.mostread!.articles![3].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                          ],
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(30), // Image radius
+                                                      child: widgets.Image.network('${feedModel?.mostread!.articles![3].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Color(0xffCBCBCB),
+                                          thickness: 1,
+                                          indent: 0,
+                                          endIndent: 0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                      articles: feedModel!.mostread!.articles![4],
+                                    )));
+                                  },
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                //text circle avatar
+                                                child: widgets.Image.asset(
+                                                  'assets/number-5.png',
+                                                  height: 32,
+                                                  width: 32,
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Container(
+                                                        width: 200,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Text("${feedModel?.mostread!.articles![4].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                            Text("${feedModel?.mostread!.articles![4].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                          ],
+                                                        )
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                  margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(20), // Image border
+                                                    child: SizedBox.fromSize(
+                                                      size: Size.fromRadius(30), // Image radius
+                                                      child: widgets.Image.network('${feedModel?.mostread!.articles![4].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ),
                       ),
-                    ],
-                  )
-              ),
-              Container(
-                child: SizedBox(
-                  width: 350,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
                     ),
-                    color: Color(0xff042330),
-                    child: Column(
-                        children: <Widget>[
+                    Container(
+                      child: Row(
+                        children: [
                           InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
-                                articles: feedModel!.mostread!.articles![0],
-                              )));
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailFeed()));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 15, right: 15),
+                                child: Row(
+                                    children: <Widget>[
+                                      Text("Lebih banyak bacaan tertas", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 18), fontWeight: FontWeight.w600),),
+                                      Container(
+                                          margin: const EdgeInsets.only(left: 5),
+                                          child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,)
+                                      )
+                                    ]
+                                ),
+                                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              )
+                          ),
+                        ],
+                      ),
+                    )
+                  ]
+                ),
+              ) : Container(
+                child: Column(
+                  children: [
+                    Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top:20, left: 10),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
                                         Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          //text circle avatar
-                                          child: widgets.Image.asset("assets/number-1.png", width: 24, height: 24,),
+                                          margin: const EdgeInsets.only(left: 5),
+                                          child:  Text("Hari ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.normal),),
                                         ),
                                         Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
+                                          margin: const EdgeInsets.only(left: 5),
+                                          child:  Text("Sejarah Hari Ini", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                                        ),
+                                        Column(
+                                            children: [
                                               Container(
-                                                  width: 200,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("${feedModel?.mostread!.articles![0].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![0].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                    ],
-                                                  )
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                            margin: const EdgeInsets.only(top: 10, bottom: 10),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(30), // Image radius
-                                                child: widgets.Image.network("${feedModel?.mostread!.articles![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                child: Column(
+                                                  children: [
+                                                    Container(
+                                                      child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: EdgeInsets.only(left: 5, top: 10),
+                                                              width: 40,
+                                                              height: 40,
+                                                              child: Lottie.asset('assets/circle.json', fit: BoxFit.cover,),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets.only(left: 10, top: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text("${onThisDayModel?.events![0].year ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ]
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 350,
+                                                          margin: EdgeInsets.only(left: 17),
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              IntrinsicHeight(
+                                                                child: Row(
+                                                                  children: [
+                                                                    const VerticalDivider(
+                                                                      color: Color(0xffCBCBCB),
+                                                                      thickness: 1,
+                                                                    ),
+                                                                    Container(
+                                                                      width: 320,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: <Widget>[
+                                                                          Container(
+                                                                            margin: const EdgeInsets.only(left: 10),
+                                                                            child: Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Text("${onThisDayModel?.events![0].text ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
+                                                                                InkWell(
+                                                                                  onTap: () {
+                                                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
+                                                                                      pages: onThisDayModel!.events![0].pages![0],
+                                                                                    )));
+                                                                                  },
+                                                                                  child: Card(
+                                                                                    color: Color(0xff042330),
+                                                                                    shape: RoundedRectangleBorder(
+                                                                                      borderRadius: BorderRadius.circular(10.0),
+                                                                                      side: BorderSide(color: Colors.white, width: 0.5),
+                                                                                    ),
+                                                                                    child: Container(
+                                                                                      width: 330,
+                                                                                      child: Column(
+                                                                                        children: <Widget>[
+                                                                                          Container(
+                                                                                            margin: const EdgeInsets.only(bottom: 10),
+                                                                                            //image radius
+                                                                                            child: ClipRRect(
+                                                                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                                                                                child: widgets.Image.network("${onThisDayModel?.events![0].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", width: 330, height: 230, fit: BoxFit.cover,)
+                                                                                            ),
+                                                                                          ),
+                                                                                          Container(
+                                                                                            color: Color(0xff042330),
+                                                                                            child: Column(
+                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                              children: <Widget>[
+                                                                                                Container(
+                                                                                                    margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                                                                                    width: 300,
+                                                                                                    child: Column(
+                                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                      children: [
+                                                                                                        Text("${onThisDayModel?.events![0].pages![0].normalizedtitle ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
+                                                                                                        Divider(
+                                                                                                          color: Colors.white,
+                                                                                                          height: 20,
+                                                                                                          thickness: 1,
+                                                                                                          indent: 0,
+                                                                                                          endIndent: 200,
+                                                                                                        ),
+                                                                                                        Text("${onThisDayModel?.events![0].pages![0].description ?? "Kesahalan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                                                      ],
+                                                                                                    )
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            )
+                                            ]
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    color: Color(0xffCBCBCB),
-                                    thickness: 0.5,
-                                    indent: 0,
-                                    endIndent: 0,
-                                  ),
-                                ],
-                              ),
+                                    )
+                                )
+                              ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
-                                articles: feedModel!.mostread!.articles![1],
-                              )));
-                            },
-                            child: Container(
+                          Container(
+                              margin: const EdgeInsets.only(top: 75),
                               child: Column(
                                 children: [
-                                  Container(
-                                    child: Row(
+                                  Row(
                                       children: <Widget>[
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                                          //text circle avatar
-                                          child: widgets.Image.asset(
-                                            'assets/number-2.png',
-                                            height: 32,
-                                            width: 32,
-                                          ),
+                                        Text("Bacaan Teratas", style: GoogleFonts.poppins(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                                      ]
+                                  ),
+                                  Container(
+                                    child: SizedBox(
+                                      width: 350,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          side: BorderSide(color: Color(0xffCBCBCB), width: 0.5),
                                         ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                        color: Color(0xff042330),
+                                        child: Column(
                                             children: <Widget>[
-                                              Container(
-                                                  width: 200,
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                                    articles: feedModel!.mostread!.articles![0],
+                                                  )));
+                                                },
+                                                child: Container(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
-                                                      Text("${feedModel?.mostread!.articles![1].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![1].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                      Container(
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              //text circle avatar
+                                                              child: widgets.Image.asset("assets/number-1.png", width: 24, height: 24,),
+                                                            ),
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      width: 200,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${feedModel?.mostread!.articles![0].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                                                          Text("${feedModel?.mostread!.articles![0].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(20), // Image border
+                                                                  child: SizedBox.fromSize(
+                                                                    size: Size.fromRadius(30), // Image radius
+                                                                    child: widgets.Image.network("${feedModel?.mostread!.articles![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                                  ),
+                                                                )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        color: Color(0xffCBCBCB),
+                                                        thickness: 0.5,
+                                                        indent: 0,
+                                                        endIndent: 0,
+                                                      ),
                                                     ],
-                                                  )
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                            margin: const EdgeInsets.only(top: 10, bottom: 10),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(30), // Image radius
-                                                child: widgets.Image.network('${feedModel?.mostread!.articles![1].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                  ),
+                                                ),
                                               ),
-                                            )
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                                    articles: feedModel!.mostread!.articles![1],
+                                                  )));
+                                                },
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                              //text circle avatar
+                                                              child: widgets.Image.asset(
+                                                                'assets/number-2.png',
+                                                                height: 32,
+                                                                width: 32,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      width: 200,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${feedModel?.mostread!.articles![1].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                                          Text("${feedModel?.mostread!.articles![1].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(20), // Image border
+                                                                  child: SizedBox.fromSize(
+                                                                    size: Size.fromRadius(30), // Image radius
+                                                                    child: widgets.Image.network('${feedModel?.mostread!.articles![1].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                                  ),
+                                                                )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        color: Color(0xffCBCBCB),
+                                                        thickness: 1,
+                                                        indent: 0,
+                                                        endIndent: 0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                                    articles: feedModel!.mostread!.articles![2],
+                                                  )));
+                                                },
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                              //text circle avatar
+                                                              child: widgets.Image.asset(
+                                                                'assets/number-3.png',
+                                                                height: 32,
+                                                                width: 32,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      width: 200,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${feedModel?.mostread!.articles![2].normalizedtitle ?? "Kesalahan pada server" }", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                                          Text("${feedModel?.mostread!.articles![2].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(20), // Image border
+                                                                  child: SizedBox.fromSize(
+                                                                    size: Size.fromRadius(30), // Image radius
+                                                                    child: widgets.Image.network("${feedModel?.mostread!.articles![2].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                                  ),
+                                                                )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        color: Color(0xffCBCBCB),
+                                                        thickness: 1,
+                                                        indent: 0,
+                                                        endIndent: 0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                                    articles: feedModel!.mostread!.articles![3],
+                                                  )));
+                                                },
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                              //text circle avatar
+                                                              child: widgets.Image.asset(
+                                                                'assets/number-4.png',
+                                                                height: 32,
+                                                                width: 32,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      width: 200,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${feedModel?.mostread!.articles![3].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                                          Text("${feedModel?.mostread!.articles![3].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(20), // Image border
+                                                                  child: SizedBox.fromSize(
+                                                                    size: Size.fromRadius(30), // Image radius
+                                                                    child: widgets.Image.network('${feedModel?.mostread!.articles![3].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                                  ),
+                                                                )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Divider(
+                                                        color: Color(0xffCBCBCB),
+                                                        thickness: 1,
+                                                        indent: 0,
+                                                        endIndent: 0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                                    articles: feedModel!.mostread!.articles![4],
+                                                  )));
+                                                },
+                                                child: Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        child: Row(
+                                                          children: <Widget>[
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                                              //text circle avatar
+                                                              child: widgets.Image.asset(
+                                                                'assets/number-5.png',
+                                                                height: 32,
+                                                                width: 32,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
+                                                              child: Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Container(
+                                                                      width: 200,
+                                                                      child: Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Text("${feedModel?.mostread!.articles![4].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
+                                                                          Text("${feedModel?.mostread!.articles![4].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                                        ],
+                                                                      )
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                                margin: const EdgeInsets.only(top: 10, bottom: 10),
+                                                                child: ClipRRect(
+                                                                  borderRadius: BorderRadius.circular(20), // Image border
+                                                                  child: SizedBox.fromSize(
+                                                                    size: Size.fromRadius(30), // Image radius
+                                                                    child: widgets.Image.network('${feedModel?.mostread!.articles![4].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
+                                                                  ),
+                                                                )
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ]
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                  Divider(
-                                    color: Color(0xffCBCBCB),
-                                    thickness: 1,
-                                    indent: 0,
-                                    endIndent: 0,
-                                  ),
                                 ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
-                                articles: feedModel!.mostread!.articles![2],
-                              )));
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                                          //text circle avatar
-                                          child: widgets.Image.asset(
-                                            'assets/number-3.png',
-                                            height: 32,
-                                            width: 32,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                  width: 200,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("${feedModel?.mostread!.articles![2].normalizedtitle ?? "Kesalahan pada server" }", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![2].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                    ],
-                                                  )
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                            margin: const EdgeInsets.only(top: 10, bottom: 10),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(30), // Image radius
-                                                child: widgets.Image.network("${feedModel?.mostread!.articles![2].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
-                                              ),
-                                            )
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    color: Color(0xffCBCBCB),
-                                    thickness: 1,
-                                    indent: 0,
-                                    endIndent: 0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
-                                articles: feedModel!.mostread!.articles![3],
-                              )));
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                                          //text circle avatar
-                                          child: widgets.Image.asset(
-                                            'assets/number-4.png',
-                                            height: 32,
-                                            width: 32,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                  width: 200,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("${feedModel?.mostread!.articles![3].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![3].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                    ],
-                                                  )
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                            margin: const EdgeInsets.only(top: 10, bottom: 10),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(30), // Image radius
-                                                child: widgets.Image.network('${feedModel?.mostread!.articles![3].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
-                                              ),
-                                            )
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(
-                                    color: Color(0xffCBCBCB),
-                                    thickness: 1,
-                                    indent: 0,
-                                    endIndent: 0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
-                                articles: feedModel!.mostread!.articles![4],
-                              )));
-                            },
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
-                                          //text circle avatar
-                                          child: widgets.Image.asset(
-                                            'assets/number-5.png',
-                                            height: 32,
-                                            width: 32,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.only(top: 10, left: 15, bottom: 10),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Container(
-                                                  width: 200,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text("${feedModel?.mostread!.articles![4].normalizedtitle ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),),
-                                                      Text("${feedModel?.mostread!.articles![4].description ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
-                                                    ],
-                                                  )
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                            margin: const EdgeInsets.only(top: 10, bottom: 10),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(20), // Image border
-                                              child: SizedBox.fromSize(
-                                                size: Size.fromRadius(30), // Image radius
-                                                child: widgets.Image.network('${feedModel?.mostread!.articles![4].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}', fit: BoxFit.cover, width: 30, height: 30,),
-                                              ),
-                                            )
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                              )
                           ),
                         ]
                     ),
-                  ),
-                ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailFeed()));
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 15, right: 15),
+                    Row(
+                      children: [
+                        Container(
                           child: Row(
-                              children: <Widget>[
-                                Text("Lebih banyak bacaan tertas", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 18), fontWeight: FontWeight.w600),),
-                                Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,)
-                                )
-                              ]
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOtd()));
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 20, right: 15),
+                                    child: Row(
+                                        children: <Widget>[
+                                          Text("Lebih banyak sejarah pada hari ini", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 16), fontWeight: FontWeight.w600),),
+                                          Container(
+                                            margin: const EdgeInsets.only(left: 5),
+                                            child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,),
+                                          )
+                                        ]
+                                    ),
+                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                  )
+                              ),
+                            ],
                           ),
-                          padding: const EdgeInsets.only(top: 5, bottom: 5),
-                        )
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailFeed()));
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 40, right: 15),
+                                    child: Row(
+                                        children: <Widget>[
+                                          Text("Lebih banyak bacaan tertas", style: GoogleFonts.poppins(color: Color(0xff5FD068), textStyle: TextStyle(fontSize: 18), fontWeight: FontWeight.w600),),
+                                          Container(
+                                              margin: const EdgeInsets.only(left: 5),
+                                              child: Icon(Icons.arrow_forward, color: Color(0xff5FD068), size: 20,)
+                                          )
+                                        ]
+                                    ),
+                                    padding: const EdgeInsets.only(top: 5, bottom: 5),
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -750,7 +1321,7 @@ class _HomeState extends State<Home> {
                                       children: [
                                         Stack(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 200,
                                               width: 200,
                                               child: Card(

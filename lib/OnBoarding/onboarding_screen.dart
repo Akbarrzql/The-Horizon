@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thehorizonapps/Login/login.dart';
 import 'package:thehorizonapps/Main/bottomnav.dart';
 import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/OnBoarding/onboarding_contents.dart';
@@ -114,7 +115,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MainNav(),
+                            builder: (context) => const Login(),
                           ),
                         );
                       },

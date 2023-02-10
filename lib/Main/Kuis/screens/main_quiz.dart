@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:thehorizonapps/Main/Kuis/screens/quizz_screen.dart';
 import 'package:thehorizonapps/Main//Kuis/ui/shared/color.dart';
 
@@ -14,6 +15,25 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xff042330),
+          elevation: 0.5,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/newlogosmall.png',
+                fit: BoxFit.contain,
+                height: 50,
+                width: 50,
+              ),
+              Container(
+                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
+            ],
+          ),
+          //no back button
+          automaticallyImplyLeading: false,
+        ),
       backgroundColor: Color(0xff042330),
       body: Center(
         child: Container(

@@ -1,44 +1,43 @@
 {
   "project_info": {
-    "project_number": "352631530210",
-    "project_id": "thehorizon-c6c4f",
-    "storage_bucket": "thehorizon-c6c4f.appspot.com"
+    "project_number": "1036458352165",
+    "project_id": "thehorizon-a6a02",
+    "storage_bucket": "thehorizon-a6a02.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:352631530210:android:e3c1a9526dc489d47e74bb",
+        "mobilesdk_app_id": "1:1036458352165:android:23a32c010498f2629c69cc",
         "android_client_info": {
           "package_name": "com.example.thehorizonapps"
         }
       },
       "oauth_client": [
         {
-          "client_id": "352631530210-bdhp7rjvjjvs24ko1se8cplaoejve4ao.apps.googleusercontent.com",
+          "client_id": "1036458352165-4vtpri1nsfbfbivnu27uvqug8u2r9v8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thehorizonapps",
+            "certificate_hash": "b6e04f866d3d9251c629e745361b61ee68e7450c"
+          }
+        },
+        {
+          "client_id": "1036458352165-rh4e78lqq8rau35ri0bd5dfgvhtojp95.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.thehorizonapps",
             "certificate_hash": "20bd87f97629dcbc26c1815e8acaa80502ecb0ee"
           }
-        },
-        {
-          "client_id": "352631530210-ts8haqn1etopt7n1v477hdphjocs28nk.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBpmwf7k-tlgVbJMo31LTW5NezVbymdWog"
+          "current_key": "AIzaSyA1kRfr_Vt103SSuYDaXpZxi3vcx3-RI7o"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "352631530210-ts8haqn1etopt7n1v477hdphjocs28nk.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
