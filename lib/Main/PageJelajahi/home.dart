@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/08'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
 
@@ -886,7 +886,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                           Container(
-                              margin: const EdgeInsets.only(top: 65),
+                              margin: const EdgeInsets.only(top: 75),
                               child: Column(
                                 children: [
                                   Row(
@@ -1321,7 +1321,7 @@ class _HomeState extends State<Home> {
                                       children: [
                                         Stack(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 200,
                                               width: 200,
                                               child: Card(
