@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/08'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
 
@@ -121,6 +121,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff042330),
@@ -208,8 +209,8 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              //responsive condition
-              MediaQuery.of(context).size.width < 400 ? Container(
+              // responsive horizontal list
+              widthScreen < 550 ? Container(
                 child: Column(
                     children: [
                       Container(
@@ -779,13 +780,14 @@ class _HomeState extends State<Home> {
                             child: Column(
                               children: [
                                 Container(
+                                  margin: const EdgeInsets.only(right: 260),
                                   child: Row(
                                       children: <Widget>[
                                         Container(
-                                          margin: EdgeInsets.only(left: 5, top: 10),
+                                          margin: EdgeInsets.only(top: 10),
                                           width: 40,
                                           height: 40,
-                                          child: Lottie.asset('assets/circle.json', width: 300, height: 300, fit: BoxFit.cover,),
+                                          child: Lottie.asset('assets/circle.json', fit: BoxFit.cover,),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(left: 10, top: 10),
