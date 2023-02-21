@@ -5,7 +5,7 @@ import 'package:thehorizonapps/Main/PageJelajahi/home.dart';
 import 'package:thehorizonapps/Main/PageSave/KategoriSave/saveFeed.dart';
 import 'package:thehorizonapps/Main/PageSave/PageSave.dart';
 import 'package:thehorizonapps/Main/article_users/view_article_page.dart';
-import 'package:thehorizonapps/Porfile/profile.dart';
+import 'package:thehorizonapps/profile/profile.dart';
 import 'package:thehorizonapps/Search/SearchPage.dart';
 
 class MainNav extends StatefulWidget {
@@ -52,6 +52,8 @@ class _MainNavState extends State<MainNav> {
         unselectedIconTheme: IconThemeData(color: Colors.white),
         selectedIconTheme: IconThemeData(color: Color(0xff5FD068)),
         selectedItemColor: Color(0xff5FD068),
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             backgroundColor: Color(0xff042330),

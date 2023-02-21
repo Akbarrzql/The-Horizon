@@ -16,10 +16,10 @@ class SaveOnThisDay extends StatefulWidget {
 }
 
 class _SaveOnThisDayState extends State<SaveOnThisDay> {
-
   List<Pages> pages = <Pages>[];
   var database;
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   Future initDB() async {
     database = openDatabase(
@@ -59,7 +59,6 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
     );
   }
 
-
   Future<dynamic> _refresh() {
     return initDB();
   }
@@ -69,7 +68,8 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
     // TODO: implement initState
     super.initState();
     initDB();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState!.show());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState!.show());
   }
 
   @override
@@ -91,7 +91,11 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                 width: 50,
               ),
               Container(
-                  padding: const EdgeInsets.only(left: 1), child: Text('TheHorizon', style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),)),
+                  padding: const EdgeInsets.only(left: 1),
+                  child: Text(
+                    'TheHorizon',
+                    style: GoogleFonts.imFellGreatPrimerSc(color: Colors.white),
+                  )),
             ],
           ),
         ),
@@ -99,103 +103,123 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
           color: Colors.white,
         ),
       ),
-      body: (
-          RefreshIndicator(
-            onRefresh: _refresh,
-            key: _refreshIndicatorKey,
-            child: pages.length == 0
-                ? ListView(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 250),
-                  child: Center(
-                    child: Text(
-                      "Tidak ada article yang disimpan",
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ) : ListView.builder(
-              itemCount: pages.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailOnthisday(
-                          pages: pages[index],
+      body: (RefreshIndicator(
+          onRefresh: _refresh,
+          key: _refreshIndicatorKey,
+          child: pages.length == 0
+              ? ListView(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 250),
+                      child: Center(
+                        child: Text(
+                          "Tidak ada article yang disimpan",
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ).then((value) => initDB());
-                  },
-                  child: Card(
-                    elevation: 1,
-                    color: Color(0xff042330),
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 330,
-                                  margin: EdgeInsets.only(top: 10, left: 15),
-                                  child: Text(
-                                    "${pages[index].normalizedtitle}",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white
-                                    ),
-                                  ),
+                    ),
+                  ],
+                )
+              : MediaQuery.of(context).size.width >= 500
+                  ? GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.7,
+                      ),
+                      itemCount: pages.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailOnthisday(
+                                  pages: pages[index],
                                 ),
-                                Container(
-                                  width: 330,
-                                  margin: EdgeInsets.only(left: 15,bottom: 10),
-                                  child: Text(
-                                    "${pages[index].description ?? "Tidak terdapat deskripsi"}",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                        color: Colors.white
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 15, top: 10, bottom: 10),
-                                        child: Card(
-                                          //radius
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ).then((value) => initDB());
+                          },
+                          child: Card(
+                            elevation: 3,
+                            color: Color(0xff042330),
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          margin: EdgeInsets.only(
+                                              top: 10, left: 15),
+                                          child: Text(
+                                            "${pages[index].normalizedtitle}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
                                           ),
-                                          elevation: 1,
-                                          color: Color(0xff5FD068),
-                                          child: Container(
-                                            padding: EdgeInsets.all(3),
-                                            child: Text(
-                                              "Sejarah Hari ini",
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xff042330),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.4,
+                                          margin: EdgeInsets.only(
+                                              left: 15, bottom: 10),
+                                          child: Text(
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            "${pages[index].description ?? "Tidak terdapat deskripsi"}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Row(children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 15, top: 10, bottom: 10),
+                                            child: Card(
+                                              //radius
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              elevation: 1,
+                                              color: Color(0xff5FD068),
+                                              child: Container(
+                                                padding: EdgeInsets.all(3),
+                                                child: Text(
+                                                  "Sejarah Hari ini",
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff042330),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 150, top: 10, bottom: 10),
-                                          child: Container(
+                                          // Spacer(),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.19,
+                                          ),
+                                          Container(
                                             width: 50,
                                             height: 50,
                                             child: IconButton(
@@ -207,31 +231,76 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                                 //alert dialog
                                                 showDialog(
                                                   context: context,
-                                                  builder: (BuildContext context) {
+                                                  builder:
+                                                      (BuildContext context) {
                                                     return AlertDialog(
-                                                      backgroundColor: Color(0xff042330),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(20.0),
+                                                      backgroundColor:
+                                                          Color(0xff042330),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
                                                       ),
                                                       //width and height of alert dialog
-                                                      title: Text("Hapus!", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 16, color: Colors.red)), textAlign: TextAlign.center,),
-                                                      content: Text("Apakah anda yakin ingin menhapus artikel ini?", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),textAlign: TextAlign.center,),
+                                                      title: Text(
+                                                        "Hapus!",
+                                                        style: GoogleFonts.poppins(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .red)),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      content: Text(
+                                                        "Apakah anda yakin ingin menghapus artikel ini?",
+                                                        style: GoogleFonts.poppins(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .white)),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () {
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
-                                                          child: Text("Tidak", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),),
+                                                          child: Text(
+                                                            "Tidak",
+                                                            style: GoogleFonts.poppins(
+                                                                textStyle: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .white)),
+                                                          ),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
-                                                            deleteNyt(pages[index]);
+                                                            deleteNyt(
+                                                                pages[index]);
                                                             setState(() {
-                                                              pages.removeAt(index);
+                                                              pages.removeAt(
+                                                                  index);
                                                             });
-                                                            Navigator.of(context).pop();
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
                                                           },
-                                                          child: Text("Ya", style: GoogleFonts.poppins(textStyle: TextStyle(fontSize: 14, color: Colors.white)),),
+                                                          child: Text(
+                                                            "Ya",
+                                                            style: GoogleFonts.poppins(
+                                                                textStyle: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .white)),
+                                                          ),
                                                         ),
                                                       ],
                                                     );
@@ -239,24 +308,206 @@ class _SaveOnThisDayState extends State<SaveOnThisDay> {
                                                 );
                                               },
                                             ),
-                                            )
-
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
-      ),
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: pages.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailOnthisday(
+                                  pages: pages[index],
+                                ),
+                              ),
+                            ).then((value) => initDB());
+                          },
+                          child: Card(
+                            elevation: 1,
+                            color: Color(0xff042330),
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          margin: EdgeInsets.only(
+                                              top: 10, left: 15),
+                                          child: Text(
+                                            "${pages[index].normalizedtitle}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          margin: EdgeInsets.only(
+                                              left: 15, bottom: 10),
+                                          child: Text(
+                                            "${pages[index].description ?? "Tidak terdapat deskripsi"}",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        Row(children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                left: 15, top: 10, bottom: 10),
+                                            child: Card(
+                                              //radius
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              elevation: 1,
+                                              color: Color(0xff5FD068),
+                                              child: Container(
+                                                padding: EdgeInsets.all(3),
+                                                child: Text(
+                                                  "Sejarah Hari ini",
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xff042330),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          // Spacer(),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.4,
+                                          ),
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            child: IconButton(
+                                              color: Colors.red,
+                                              //size icon
+                                              iconSize: 20,
+                                              icon: Icon(Icons.delete),
+                                              onPressed: () {
+                                                //alert dialog
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      backgroundColor:
+                                                          Color(0xff042330),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
+                                                      ),
+                                                      //width and height of alert dialog
+                                                      title: Text(
+                                                        "Hapus!",
+                                                        style: GoogleFonts.poppins(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors
+                                                                    .red)),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      content: Text(
+                                                        "Apakah anda yakin ingin menghapus artikel ini?",
+                                                        style: GoogleFonts.poppins(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .white)),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            "Tidak",
+                                                            style: GoogleFonts.poppins(
+                                                                textStyle: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .white)),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            deleteNyt(
+                                                                pages[index]);
+                                                            setState(() {
+                                                              pages.removeAt(
+                                                                  index);
+                                                            });
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text(
+                                                            "Ya",
+                                                            style: GoogleFonts.poppins(
+                                                                textStyle: TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Colors
+                                                                        .white)),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        ])
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ))),
     );
   }
 }

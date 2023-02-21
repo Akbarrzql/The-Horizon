@@ -17,26 +17,26 @@ class splashscreen extends StatefulWidget {
 }
 
 class _splashscreenState extends State<splashscreen> {
-
   startSplashScreen() async {
-    // FirebaseAuth.instance.authStateChanges().listen((User? user) {
-    //   if (user == null) {
-    //     print('User is currently signed out!');
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => Login()));
-    //   } else {
-    //     print('User is signed in!');
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => MainNav()));
-    //   }
-    // });
-    var duration = const Duration(seconds: 5);
-    return Timer(duration, () {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const MainNav()),
-              (Route<dynamic> route) => false);
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Login()));
+      } else {
+        print('User is signed in!');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MainNav()));
+      }
     });
+    // var duration = const Duration(seconds: 5);
+    // return Timer(duration, () {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (context) => const MainNav()),
+    //           (Route<dynamic> route) => false);
+    // });
   }
+
 
   @override
   void initState() {
@@ -56,8 +56,8 @@ class _splashscreenState extends State<splashscreen> {
           Center(
             child: Image.asset(
               "assets/newlogoupdate.png",
-              width: 400.0,
-              height: 400.0,
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: MediaQuery.of(context).size.width * 0.5,
               fit: BoxFit.contain,
             ),
           ),
