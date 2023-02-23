@@ -101,10 +101,10 @@ class _articlesaveState extends State<articlesave> {
         onRefresh: _refresh,
         key: _refreshIndicatorKey,
         child: articles.length == 0
-            ? ListView(
+            ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 250),
                     child: Center(
                       child: Text(
                         "Tidak ada article yang disimpan",
