@@ -105,10 +105,10 @@ class _SaveRandomState extends State<SaveRandom> {
             onRefresh: _refresh,
             key: _refreshIndicatorKey,
             child: randomModel.length == 0
-                ? ListView(
+                ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 250),
                         child: Center(
                           child: Text(
                             "Tidak ada article yang disimpan",
