@@ -42,6 +42,7 @@ class _HomeState extends State<Home> {
   FeedModel? feedModel;
   OnThisDayModel? onThisDayModel;
   var loading = true.obs;
+  bool _isloading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
   new GlobalKey<RefreshIndicatorState>();
   String year = DateTime.now().year.toString();
@@ -51,9 +52,10 @@ class _HomeState extends State<Home> {
 
 
   //get data
-  getFeed() async {
+
+  getOtd() async{
     setState(() {
-      loading(true);
+      _isloading = false;
     });
 
     final responseOtd = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${mount}/${day}'));
@@ -61,14 +63,32 @@ class _HomeState extends State<Home> {
     onThisDayModel = OnThisDayModel.fromJson(jsonDecode(responseOtd.body.toString()));
     print("Response body: ${onThisDayModel?.events![0].text}");
 
-    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/08'));
+    setState(() {
+      if (onThisDayModel!.events![0].text == null) {
+        onThisDayModel!.events!.removeAt(0);
+        _isloading = false;
+      }else{
+        _isloading = true;
+      }
+    });
+  }
+
+  getFeed() async {
+    setState(() {
+      _isloading = false;
+    });
+
+    final response = await http.get(Uri.parse('https://api.wikimedia.org/feed/v1/wikipedia/id/featured/${year}/${mount}/${day}'));
     print("Response status: ${response.statusCode}");
     feedModel = FeedModel.fromJson(jsonDecode(response.body.toString()));
 
-
+    //handel eror jika data kosong maka tidak akan di masukan ke list
+    if (feedModel!.mostread!.articles! == null) {
+      feedModel!.mostread!.articles!.removeAt(0);
+    }
 
     setState(() {
-      loading(false);
+      _isloading = true;
     });
   }
 
@@ -98,7 +118,8 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     getFeed();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState!.show());
+    getOtd();
+    // WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState!.show());
   }
 
   Route _createRoute() {
@@ -236,7 +257,7 @@ class _HomeState extends State<Home> {
                           ],
                         ),
                       ),
-                      Container(
+                      _isloading ? Container(
                         child: Column(
                           children: [
                             Container(
@@ -353,6 +374,13 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         ),
+                      ) : Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xff5FD068)),
+                          ),
+                        ),
                       ),
                       Container(
                         child: Row(
@@ -390,7 +418,7 @@ class _HomeState extends State<Home> {
                             ],
                           )
                       ),
-                      Container(
+                      _isloading ? Container(
                         child: SizedBox(
                           width: 350,
                           child: Card(
@@ -705,6 +733,13 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                         ),
+                      ) : Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 20),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(Color(0xff5FD068)),
+                          ),
+                        ),
                       ),
                       Container(
                         child: Row(
@@ -776,7 +811,7 @@ class _HomeState extends State<Home> {
                     ),
                     Row(
                         children: [
-                          Container(
+                          _isloading ? Container(
                             child: Column(
                               children: [
                                 Container(
@@ -894,9 +929,16 @@ class _HomeState extends State<Home> {
                                 ),
                               ],
                             ),
+                          ) : Container(
+                            margin: const EdgeInsets.only(top: 20, bottom: 20, left: 100),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xff5FD068)),
+                              ),
+                            ),
                           ),
                           SizedBox(width: 10,),
-                          Container(
+                          _isloading ? Container(
                             margin: EdgeInsets.only(top: 10),
                             child: SizedBox(
                               width: 350,
@@ -1212,6 +1254,13 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                             ),
+                          ) : Container(
+                            margin: const EdgeInsets.only(top: 20, bottom: 20, left: 350),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Color(0xff5FD068)),
+                              ),
+                            ),
                           ),
                         ]
                     ),
@@ -1405,12 +1454,13 @@ class _HomeState extends State<Home> {
                           )));
                         },
                         child: Card(
+                          margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
                           color: Color(0xff042330),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(color: Colors.white, width: 0.5),
                           ),
-                          child: Container(
+                          child: widthScreen < 550 ? Container(
                             width: 330,
                             child: Column(
                               children: <Widget>[
@@ -1439,6 +1489,44 @@ class _HomeState extends State<Home> {
                                                 thickness: 1,
                                                 indent: 0,
                                                 endIndent: 200,
+                                              ),
+                                              Text(items[0].description.toString(), style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                            ],
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ) :Container(
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  width: 250,
+                                  //image radius
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                    child: widgets.Image.network(items[0].image.toString(), fit: BoxFit.cover),
+                                  ),
+                                ),
+                                Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                          width: MediaQuery.of(context).size.width - 320,
+                                          margin: const EdgeInsets.only(bottom: 280, left: 10, right: 10),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(items[0].title.toString(), style: GoogleFonts.poppins(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),),
+                                              const Divider(
+                                                color: Colors.white,
+                                                height: 20,
+                                                thickness: 1,
+                                                indent: 0,
+                                                endIndent: 350,
                                               ),
                                               Text(items[0].description.toString(), style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
                                             ],

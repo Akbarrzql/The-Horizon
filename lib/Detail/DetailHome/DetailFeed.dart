@@ -44,9 +44,10 @@ class _DetailFeedState extends State<DetailFeed> {
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xff042330),
-      body: CustomScrollView(
+      body: widthScreen < 550 ? CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             backgroundColor: Color(0xff042330),
@@ -103,6 +104,96 @@ class _DetailFeedState extends State<DetailFeed> {
                                           ),
                                           Container(
                                               margin: const EdgeInsets.only(top: 10, bottom: 10, left: 60),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(20), // Image border
+                                                child: SizedBox.fromSize(
+                                                  size: Size.fromRadius(30), // Image radius
+                                                  child: widgets.Image.network("${feedModel?.mostread!.articles![index].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png"}", fit: BoxFit.cover, width: 30, height: 30,),
+                                                ),
+                                              )
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        color: Color(0xff837F7F),
+                        height: 20,
+                        thickness: 1,
+                        indent: 15,
+                        endIndent: 15,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              childCount: feedModel!.mostread!.articles!.length,
+            ),
+          )),
+        ],
+      ) : CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            backgroundColor: Color(0xff042330),
+            pinned: _pinned,
+            snap: _snap,
+            floating: _floating,
+            expandedHeight: 120.0,
+            flexibleSpace: const FlexibleSpaceBar(
+              title: Text('Bacaan Teratas TheHorizon'),
+            ),
+          ),
+          Obx(() => loadingFeed.value ? SliverFillRemaining(
+            child: Center(
+              child: widgets.Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,),
+            ),
+          ) : SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(
+                                  articles: feedModel!.mostread!.articles![index],
+                                )));
+                              },
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
+                                            margin: const EdgeInsets.only(top: 10, left: 15,),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Container(
+                                                    width: MediaQuery.of(context).size.width * 0.85,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("${feedModel?.mostread!.articles![index].normalizedtitle.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),),
+                                                        Text("${feedModel?.mostread!.articles![index].description.toString() ?? "Kesalahan pada server"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                      ],
+                                                    )
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                              margin: const EdgeInsets.only(top: 10, bottom: 10),
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(20), // Image border
                                                 child: SizedBox.fromSize(

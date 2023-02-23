@@ -19,6 +19,7 @@ class _DetailRandomState extends State<DetailRandom> {
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     CardController controller;
     return Scaffold(
         backgroundColor: Color(0xff042330),
@@ -57,7 +58,7 @@ class _DetailRandomState extends State<DetailRandom> {
               } else {
                 return Scaffold(
                   backgroundColor: Color(0xff042330),
-                  body: Container(
+                  body: widthScreen < 550 ? Container(
                     child: Column(
                       children: [
                         Container(
@@ -65,30 +66,30 @@ class _DetailRandomState extends State<DetailRandom> {
                           child: Column(
                             children: [
                               Column(
-                                children:[
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 20),
-                                    child: Image.asset(
-                                      'assets/random.png',
-                                      fit: BoxFit.contain,
-                                      height: 50,
-                                      width: 50,
+                                  children:[
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 20),
+                                      child: Image.asset(
+                                        'assets/random.png',
+                                        fit: BoxFit.contain,
+                                        height: 50,
+                                        width: 50,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: Text('Artikel Acak', style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 10),
-                                    child: Divider(
-                                      color: Color(0xff5FD068),
-                                      thickness: 5,
-                                      indent: 100,
-                                      endIndent: 100,
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 10),
+                                      child: Text('Artikel Acak', style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),),
                                     ),
-                                  ),
-                                ]
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 10),
+                                      child: Divider(
+                                        color: Color(0xff5FD068),
+                                        thickness: 5,
+                                        indent: 100,
+                                        endIndent: 100,
+                                      ),
+                                    ),
+                                  ]
                               )
                             ],
                           ),
@@ -97,8 +98,8 @@ class _DetailRandomState extends State<DetailRandom> {
                           margin: const EdgeInsets.only(top: 20),
                           height: MediaQuery.of(context).size.height * 0.4,
                           child: TinderSwapCard(
-                            swipeUp: true,
-                            swipeDown: true,
+                            swipeUp: false,
+                            swipeDown: false,
                             orientation: AmassOrientation.BOTTOM,
                             totalNum: items.length,
                             stackNum: 2,
@@ -176,6 +177,128 @@ class _DetailRandomState extends State<DetailRandom> {
                           ),
                         ),
                       ],
+                    ),
+                  ) : SingleChildScrollView(
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 40),
+                            child: Column(
+                              children: [
+                                Column(
+                                    children:[
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 20),
+                                        child: Image.asset(
+                                          'assets/random.png',
+                                          fit: BoxFit.contain,
+                                          height: 30,
+                                          width: 30,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Text('Artikel Acak', style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: Divider(
+                                          color: Color(0xff5FD068),
+                                          thickness: 5,
+                                          indent: 300,
+                                          endIndent: 300,
+                                        ),
+                                      ),
+                                    ]
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            height: MediaQuery.of(context).size.height * 0.78,
+                            child: TinderSwapCard(
+                              swipeUp: false,
+                              swipeDown: false,
+                              orientation: AmassOrientation.BOTTOM,
+                              totalNum: items.length,
+                              stackNum: 2,
+                              swipeEdge: 4.0,
+                              maxWidth: MediaQuery.of(context).size.width * 0.75,
+                              maxHeight: MediaQuery.of(context).size.width * 2.0,
+                              minWidth: MediaQuery.of(context).size.width * 0.7,
+                              minHeight: MediaQuery.of(context).size.width * 1.1,
+                              cardBuilder: (context, index) => Card(
+                                  color: Color(0xff042330),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: const BorderSide(color: Colors.white),
+                                  ),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => DetailArticleRandom(
+                                                randomModel: items[index],
+                                              )));
+                                    },
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          //image radius
+                                          Container(
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              image: DecorationImage(
+                                                image: NetworkImage(items[index].image!),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(items[index].title.toString(), style: GoogleFonts.poppins(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),),
+                                                const Divider(
+                                                  color: Color(0xff5FD068),
+                                                  height: 20,
+                                                  thickness: 1,
+                                                  indent: 0,
+                                                  endIndent: 200,
+                                                ),
+                                                Text(items[index].description.toString(), style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                              ),
+                              cardController: controller = CardController(),
+                              swipeUpdateCallback:
+                                  (DragUpdateDetails details, Alignment align) {
+                                /// Get swiping card's alignment
+                                if (align.x < 0) {
+                                  //Card is LEFT swiping
+                                } else if (align.x > 0) {
+                                  //Card is RIGHT swiping
+                                }
+                              },
+                              swipeCompleteCallback:
+                                  (CardSwipeOrientation orientation, int index) {
+                                /// Get orientation & index of swiped card!
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

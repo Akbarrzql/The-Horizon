@@ -34,6 +34,7 @@ class _DetailOtdState extends State<DetailOtd> {
 
   @override
   Widget build(BuildContext context) {
+    double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xff042330),
       appBar: AppBar(
@@ -120,7 +121,7 @@ class _DetailOtdState extends State<DetailOtd> {
       ),
       body: Obx(()=> dataController.isDataLoading.value ? Center(
         child: Image.asset('assets/loading-plane.gif', width: 200, height: 200, fit: BoxFit.cover,) ,)
-      : ListView.builder(
+      : widthScreen < 550 ? ListView.builder(
         controller: _scrollController,
         itemCount:  dataController.onThisDayModel?.events?.length,
         itemBuilder: (context, index) {
@@ -201,6 +202,129 @@ class _DetailOtdState extends State<DetailOtd> {
                                                       children: <Widget>[
                                                         Container(
                                                             margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                                                            width: 300,
+                                                            child: Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text("${ dataController.onThisDayModel?.events![index].pages![0].normalizedtitle ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700),),
+                                                                const Divider(
+                                                                  color: Colors.grey,
+                                                                  height: 20,
+                                                                  thickness: 1,
+                                                                  indent: 0,
+                                                                  endIndent: 200,
+                                                                ),
+                                                                Text("${ dataController.onThisDayModel?.events![index].pages![0].description ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 12, fontWeight: FontWeight.normal),),
+                                                              ],
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+
+      ): ListView.builder(
+        controller: _scrollController,
+        itemCount:  dataController.onThisDayModel?.events?.length,
+        itemBuilder: (context, index) {
+          return Container(
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 5, top: 10),
+                          width: 40,
+                          height: 40,
+                          child: Lottie.asset('assets/circle.json', width: 300, height: 300, fit: BoxFit.cover,),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10, top: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${ dataController.onThisDayModel?.events![index].year ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Color(0xff5FD068), fontSize: 20, fontWeight: FontWeight.w600),),
+                            ],
+                          ),
+                        )
+                      ]
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(left: 17, top: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IntrinsicHeight(
+                        child: Row(
+                          children: [
+                            VerticalDivider(
+                              color: Color(0xffCBCBCB),
+                              thickness: 1,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width - 80,
+                              height: MediaQuery.of(context).size.height / 0.95,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("${ dataController.onThisDayModel?.events![index].text ?? "Berada di masa lalu"}", style: GoogleFonts.poppins(color: Colors.white, fontSize: 14, fontWeight: FontWeight.normal),),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnthisday(
+                                              pages:  dataController.onThisDayModel!.events![index].pages![0],
+                                            )));
+                                          },
+                                          child: Card(
+                                            color: Color(0xff042330),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              side: BorderSide(color: Colors.white),
+                                            ),
+                                            child: Container(
+                                              width: 330,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Container(
+                                                    margin: const EdgeInsets.only(bottom: 10),
+                                                    child: ClipRRect(
+                                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                                                        child: FadeInImage.assetNetwork(placeholder: 'assets/logo.png', image: dataController.onThisDayModel?.events![index].pages![0].thumbnail?.source ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1200px-No-Image-Placeholder.svg.png", width: 330, height: 230, fit: BoxFit.cover,)
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        Container(
+                                                            margin: const EdgeInsets.only(left: 10, right: 10),
                                                             width: 300,
                                                             child: Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
