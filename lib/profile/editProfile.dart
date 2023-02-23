@@ -33,7 +33,7 @@ class _EditProfileState extends State<EditProfile> {
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
+        child: ListView(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

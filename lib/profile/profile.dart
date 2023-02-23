@@ -19,6 +19,7 @@ class _ProfileState extends State<Profile> {
   }
   @override
   Widget build(BuildContext context) {
+      double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -52,91 +53,17 @@ class _ProfileState extends State<Profile> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Stack(
+        child: widthScreen > 550 ? Row(
+          children:[
+            Profile(),
+            List()
+          ]
+        ) : Stack(
           children: [
             Column(
                 children: [
-                  Expanded(child: Container(
-                    width: double.infinity,
-                    color: Color(0xff042330),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 20),
-                          child: Stack(
-                            children: [
-                              CircleAvatar(
-                                radius: 70,
-                                backgroundImage: AssetImage('assets/profile-anonim.jpg'),
-                              ),
-                              Positioned(
-                                  right: 0,
-                                  bottom: 0,
-                                  child: InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
-                                },
-                                child: Container(
-                                  child:
-                                  Icon(Icons.edit, color: Colors.white, size: 20,),
-                                  padding: EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff5FD068),
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                )
-                              ))
-                            ],
-                          )
-                        ),
-                        Spacer(),
-                        Text("Akbar Rizqullah", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                        Text("${FirebaseAuth.instance.currentUser!.email}", style: TextStyle(color: Color(0xff959595), fontSize: 12, fontWeight: FontWeight.w500),),
-                        SizedBox(height: 50,),
-                        Spacer(),
-                      ],
-                    ),
-                  )),
-                  Expanded(child: Container(
-                    padding: EdgeInsets.only(top: 30),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10,),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 108,
-                                  height: 148,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Image.network("https://cdn.idntimes.com/content-images/community/2022/09/img-20220908-152834-779c2639fac019accf02dae4b183db6b-72d15e59fb35e6051fea276f1d3b155b_600x400.jpg", fit: BoxFit.cover,),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                  width: MediaQuery.of(context).size.width / 1.9,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Judul Artikel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
-                                      Text(
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 5,
-                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet ipsum id mi porta volutpat. Donec convallis velit id maximus ornare. Mauris et velit fringilla porta volutpat. Donec convallis velit id maximus ornare. Mauris et velit fringilla,'),
-                                    ],
-                                  ),
-                                )
-                              ]
-                            ),
-                          );
-                    }),
-                  ))
+                  Profile(),
+                  List()
                 ]
             ),
             Column(
@@ -160,4 +87,108 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+  Widget Profile(){
+      return
+        Expanded(child: Container(
+          width: double.infinity,
+          color: Color(0xff042330),
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: MediaQuery.of(context).size.width > 550 ? 53 : 70,
+                        backgroundImage: AssetImage('assets/profile-anonim.jpg'),
+                      ),
+                      Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
+                              },
+                              child: Container(
+                                child:
+                                Icon(Icons.edit, color: Colors.white, size: MediaQuery.of(context).size.width > 550 ? 15 : 20),
+                                padding: EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  color: Color(0xff5FD068),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                              )
+                          ))
+                    ],
+                  )
+              ),
+              Spacer(),
+              Text("Akbar Rizqullah", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+              Text("${FirebaseAuth.instance.currentUser!.email}", style: TextStyle(color: Color(0xff959595), fontSize: 12, fontWeight: FontWeight.w500),),
+              SizedBox(height: 50,),
+              Spacer(),
+            ],
+          ),
+        ));
+  }
+  Widget List() {
+      return Expanded(child: Container(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.width > 550 ? 10 : 30),
+        child: ListView(
+          children: [
+            Visibility(
+                visible: MediaQuery.of(context).size.width > 550,
+                child : Container(
+              margin: EdgeInsets.symmetric(horizontal: 100),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Color(0xff5FD068),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              child: Text('Artikel Saya', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: Colors.white ),),
+            )),
+            ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10,),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 108,
+                            height: 148,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network("https://cdn.idntimes.com/content-images/community/2022/09/img-20220908-152834-779c2639fac019accf02dae4b183db6b-72d15e59fb35e6051fea276f1d3b155b_600x400.jpg", fit: BoxFit.cover,),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            width: MediaQuery.of(context).size.width > 550 ? MediaQuery.of(context).size.width * 0.28 : MediaQuery.of(context).size.width / 1.9,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Judul Artikel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+                                Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 5,
+                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet ipsum id mi porta volutpat. Donec convallis velit id maximus ornare. Mauris et velit fringilla porta volutpat. Donec convallis velit id maximus ornare. Mauris et velit fringilla,'),
+                              ],
+                            ),
+                          )
+                        ]
+                    ),
+                  );
+                })
+          ],
+        ),
+      ));
+  }
 }
+
