@@ -28,8 +28,13 @@ class _splashscreenState extends State<splashscreen> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => MainNav()));
       }
-    }
-    );
+    });
+    // var duration = const Duration(seconds: 5);
+    // return Timer(duration, () {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (context) => const MainNav()),
+    //           (Route<dynamic> route) => false);
+    // });
   }
 
 
